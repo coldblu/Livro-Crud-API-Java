@@ -7,7 +7,11 @@ import br.ueg.atividade01.prog.web.mapper.LivroMapper;
 import br.ueg.atividade01.prog.web.model.Livro;
 import br.ueg.atividade01.prog.web.service.LivroService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,14 +30,20 @@ public class LivroController {
 
     @GetMapping(path="/listar")
     @Operation(description = "Listagem Geral dos livros")
-    public List<LivroListaDTO> listAll(){
+    @ApiResponse(responseCode = "200", description = "Listagem de livros",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = LivroListaDTO.class)))
+    public ResponseEntity<List<LivroListaDTO>> listAll(){
         List<Livro> livros = livroService.listarTodosLivros();
-        return livroMapper.toDTO(livros);
+        return ResponseEntity.ok(livroMapper.toDTO(livros));
     }
 
     @PostMapping(path="/incluir")
     @Operation(description = "Método utilizado para realizar a inclusão de um livro")
-    public LivroDTO incluir(@RequestBody LivroAlteravelDTO livro){
+    @ApiResponse(responseCode = "200", description = "Livro Incluído",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = LivroDTO.class)))
+    public ResponseEntity<LivroDTO> incluir(@RequestBody LivroAlteravelDTO livro){
         //prepração para entrada.
         Livro livroIncluir = this.livroMapper.toModel(livro);
 
@@ -42,38 +52,46 @@ public class LivroController {
         livroIncluir = this.livroService.incluir(livroIncluir);
 
         //preparação para o retorno
-        return this.livroMapper.toLivroDTO(livroIncluir);
+        LivroDTO livroDTO = this.livroMapper.toLivroDTO(livroIncluir);
+        return ResponseEntity.ok(livroDTO);
     }
 
     @PostMapping(path="/deletar")
     @Operation(description = "Método utilizado para deletar livro do banco de dados")
-    public Optional<Livro> excluir(@RequestBody LivroDTO livro, @PathVariable(name = "id") Long idLivro ){
+    @ApiResponse(responseCode = "200", description = "Livro Excluído",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Livro.class)))
+    public ResponseEntity<Optional<Livro>> excluir(@RequestBody LivroDTO livro, @PathVariable(name = "id") Long idLivro ){
         Optional<Livro> livroExcluido = this.livroService.excluir(idLivro);
-        return livroExcluido;
+        return ResponseEntity.ok(livroExcluido);
     }
 
     @PutMapping(path = "/alterar")
     @Operation(description = "Método utilizado para altlerar os dados de um livro")
-    public LivroDTO alterar(@RequestBody() LivroAlteravelDTO livro, @PathVariable(name = "id") Long idLivro ){
+    @ApiResponse(responseCode = "200", description = "Livro Alterado",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = LivroDTO.class)))
+    public ResponseEntity<LivroDTO> alterar(@RequestBody() LivroAlteravelDTO livro, @PathVariable(name = "id") Long idLivro ){
         Livro paraLivro = livroMapper.toModel(livro);
         Livro alterar = livroService.alterar(paraLivro, idLivro);
-        return livroMapper.toLivroDTO(alterar);
+        LivroDTO livroDTO = livroMapper.toLivroDTO(alterar);
+        return ResponseEntity.ok(livroDTO);
     }
 
     @GetMapping(path="/buscar")
-    @Operation(description = "Listagem Geral dos livros")
-    public LivroDTO buscar(@RequestBody LivroDTO l,@PathVariable(name = "titulo") String titulo ){
+    @Operation(description = "Buscar um livro pelo título")
+    @ApiResponse(responseCode = "200", description = "Livro encontrado",
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = LivroDTO.class)))
+    @ApiResponse(responseCode = "404", description = "Livro não encontrado")
+    public ResponseEntity<LivroDTO> buscar(@RequestBody LivroDTO l, @PathVariable(name = "titulo") String titulo ){
         List<String> erros = new ArrayList<>();
         Optional<Livro> livro = livroService.buscarLivro(titulo);
         if(livro.isPresent()){
-            return livroMapper.toDTO(livro);
+            LivroDTO livroDTO = livroMapper.toDTO(livro);
+            return ResponseEntity.ok(livroDTO);
+        } else {
+            throw new IllegalArgumentException("Livro não encontrado " + String.join(",", erros));
         }
-        else{
-            throw  new IllegalArgumentException("Livro nao encontrado "+
-                    String.join(",", erros)
-            );
-        }
-
     }
-
 }
