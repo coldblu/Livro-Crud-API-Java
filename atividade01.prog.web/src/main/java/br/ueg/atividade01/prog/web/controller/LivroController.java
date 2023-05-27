@@ -7,6 +7,7 @@ import br.ueg.atividade01.prog.web.mapper.LivroMapper;
 import br.ueg.atividade01.prog.web.model.Livro;
 import br.ueg.atividade01.prog.web.service.LivroService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,7 +33,9 @@ public class LivroController {
     @Operation(description = "Listagem Geral dos livros")
     @ApiResponse(responseCode = "200", description = "Listagem de livros",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = LivroListaDTO.class)))
+                    array=@ArraySchema()))
+    @ApiResponse(responseCode = "400", description = "Nao encontrado",
+            content = @Content(mediaType = "application/json"))
     public ResponseEntity<List<LivroListaDTO>> listAll(){
         List<Livro> livros = livroService.listarTodosLivros();
         return ResponseEntity.ok(livroMapper.toDTO(livros));
