@@ -69,14 +69,14 @@ public class LivroController {
         return ResponseEntity.ok(livroExcluido);
     }
 
-    @PutMapping(path = "/alterar")
+    @PutMapping(path = "/alterar/{id}")
     @Operation(description = "Método utilizado para altlerar os dados de um livro")
     @ApiResponse(responseCode = "200", description = "Livro Alterado",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = LivroDTO.class)))
-    public ResponseEntity<LivroDTO> alterar(@RequestBody() LivroAlteravelDTO livro, @PathVariable(name = "id") Long idLivro ){
+    public ResponseEntity<LivroDTO> alterar(@RequestBody() LivroAlteravelDTO livro, @PathVariable(name = "id") long id ){
         Livro paraLivro = livroMapper.toModel(livro);
-        Livro alterar = livroService.alterar(paraLivro, idLivro);
+        Livro alterar = livroService.alterar(paraLivro, id);
         LivroDTO livroDTO = livroMapper.toLivroDTO(alterar);
         return ResponseEntity.ok(livroDTO);
     }
