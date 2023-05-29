@@ -23,6 +23,7 @@ public class LivroMapperImpl implements LivroMapper{
         List<LivroListaDTO> livroListaDTOs = new ArrayList<>();
         for (Livro l : livros) {
             LivroListaDTO livroListaDTO = new LivroListaDTO();
+            livroListaDTO.setIdLivro(l.getIdLivro());
             livroListaDTO.setTitulo(l.getTitulo());
             livroListaDTO.setAutor(l.getAutor());
             livroListaDTO.setAnoPublicacao(l.getAnoPublicacao());

@@ -39,8 +39,8 @@ public class LivroServiceImpl implements LivroService {
     }
 
     @Override
-    public Optional<Livro> buscarLivro(String titulo) {
-        Optional<Livro> livroBD = livroRepository.findLivroByTitulo(titulo);
+    public Optional<Livro> buscarLivro(long id) {
+        Optional<Livro> livroBD = livroRepository.findLivroByidLivro(id);
         return livroBD;
     }
 

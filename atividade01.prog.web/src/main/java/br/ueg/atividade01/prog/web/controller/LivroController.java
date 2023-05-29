@@ -59,7 +59,7 @@ public class LivroController {
         return ResponseEntity.ok(livroDTO);
     }
 
-    @PostMapping(path="/deletar")
+    @PostMapping(path="/deletar/{id}")
     @Operation(description = "Método utilizado para deletar livro do banco de dados")
     @ApiResponse(responseCode = "200", description = "Livro Excluído",
             content = @Content(mediaType = "application/json",
@@ -81,20 +81,19 @@ public class LivroController {
         return ResponseEntity.ok(livroDTO);
     }
 
-    @GetMapping(path="/buscar")
+    @GetMapping(path = "/buscar/{id}")
     @Operation(description = "Buscar um livro pelo título")
     @ApiResponse(responseCode = "200", description = "Livro encontrado",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = LivroDTO.class)))
     @ApiResponse(responseCode = "404", description = "Livro não encontrado")
-    public ResponseEntity<LivroDTO> buscar(@RequestBody LivroDTO l, @PathVariable(name = "titulo") String titulo ){
-        List<String> erros = new ArrayList<>();
-        Optional<Livro> livro = livroService.buscarLivro(titulo);
-        if(livro.isPresent()){
+    public ResponseEntity<LivroDTO> buscar(@PathVariable(name = "id") long id) {
+        Optional<Livro> livro = livroService.buscarLivro(id);
+        if (livro.isPresent()) {
             LivroDTO livroDTO = livroMapper.toDTO(livro);
             return ResponseEntity.ok(livroDTO);
         } else {
-            throw new IllegalArgumentException("Livro não encontrado " + String.join(",", erros));
+            throw new IllegalArgumentException("Livro não encontrado");
         }
     }
 }
