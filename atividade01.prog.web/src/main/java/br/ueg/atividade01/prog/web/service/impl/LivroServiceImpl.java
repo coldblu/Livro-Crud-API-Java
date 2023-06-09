@@ -6,6 +6,7 @@ import br.ueg.atividade01.prog.web.service.LivroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +28,24 @@ public class LivroServiceImpl implements LivroService {
 
     @Override
     public Livro alterar(Livro livro, long id) {
-
-        return livroRepository.save(livro);
+        // Verificar se o livro com o ID fornecido existe no banco de dados
+        Optional<Livro> livroExistenteOptional = livroRepository.findById(id);
+        if (livroExistenteOptional.isPresent()) {
+            Livro livroExistente = livroExistenteOptional.get();            
+            // Atualizar os atributos relevantes do objeto existente com os valores do objeto recebido
+            livroExistente.setTitulo(livro.getTitulo());
+            livroExistente.setAutor(livro.getAutor());
+            livroExistente.setAnoPublicacao(livro.getAnoPublicacao());
+            livroExistente.setEditora(livro.getEditora());
+            livroExistente.setGenero(livro.getGenero());
+            livroExistente.setNumeroDePaginas(livro.getNumeroDePaginas());
+                       
+            // Salve o objeto atualizado
+            return livroRepository.save(livroExistente);
+        } else {
+            // Livro com o ID fornecido não encontrado
+            throw new NotFoundException("Livro não encontrado");
+        }
     }
 
     @Override

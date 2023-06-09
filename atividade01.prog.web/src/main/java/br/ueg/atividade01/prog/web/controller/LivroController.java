@@ -64,7 +64,7 @@ public class LivroController {
     @ApiResponse(responseCode = "200", description = "Livro Excluído",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = Livro.class)))
-    public ResponseEntity<Optional<Livro>> excluir(@RequestBody LivroDTO livro, @PathVariable(name = "id") Long idLivro ){
+    public ResponseEntity<Optional<Livro>> excluir(@RequestBody LivroDTO livro, @PathVariable(name = "id") long idLivro ){
         Optional<Livro> livroExcluido = this.livroService.excluir(idLivro);
         return ResponseEntity.ok(livroExcluido);
     }
