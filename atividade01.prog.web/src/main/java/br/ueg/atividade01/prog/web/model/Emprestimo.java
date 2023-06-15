@@ -35,6 +35,8 @@ public class Emprestimo {
     private String nomePessoa;
     @Column(name = "data_emprestimo", nullable = false)
     private LocalDate dataEmprestimo;
-    @Column(name = "data_devolucao", nullable = false)
+    @Column(name = "data_devolucao")
     private LocalDate dataDevolucao;
+    @Column(name = "emprestimo_ativo")
+    private boolean emprestimoAtivo;
 }
