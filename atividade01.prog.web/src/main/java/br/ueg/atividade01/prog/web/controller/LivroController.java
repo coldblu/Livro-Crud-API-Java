@@ -1,10 +1,14 @@
 package br.ueg.atividade01.prog.web.controller;
 
+import br.ueg.atividade01.prog.web.dto.EmprestimoDTO;
 import br.ueg.atividade01.prog.web.dto.LivroAlteravelDTO;
 import br.ueg.atividade01.prog.web.dto.LivroDTO;
 import br.ueg.atividade01.prog.web.dto.LivroListaDTO;
+import br.ueg.atividade01.prog.web.mapper.EmprestimoMapper;
 import br.ueg.atividade01.prog.web.mapper.LivroMapper;
+import br.ueg.atividade01.prog.web.model.Emprestimo;
 import br.ueg.atividade01.prog.web.model.Livro;
+import br.ueg.atividade01.prog.web.service.EmprestimoService;
 import br.ueg.atividade01.prog.web.service.LivroService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -15,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,9 +28,9 @@ public class LivroController {
 
     @Autowired
     private LivroMapper livroMapper;
-
     @Autowired
     private LivroService livroService;
+
 
     @GetMapping(path="/listar")
     @Operation(description = "Listagem Geral dos livros")
@@ -96,4 +99,8 @@ public class LivroController {
             throw new IllegalArgumentException("Livro não encontrado");
         }
     }
+
+
+
+
 }

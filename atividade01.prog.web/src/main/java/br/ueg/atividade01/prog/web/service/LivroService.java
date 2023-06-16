@@ -13,8 +13,4 @@ public interface LivroService {
     public Optional<Livro> buscarLivro(long id);
     public List<Livro> listarTodosLivros();
 
-    public Emprestimo incluirEmprestimo(Emprestimo emprestimo);
-    public List<Emprestimo> listarEmprestimosAtivos();
-    public Emprestimo finalizarEmprestimo(long id);
-    public Emprestimo excluirEmprestimo(long id);
 }

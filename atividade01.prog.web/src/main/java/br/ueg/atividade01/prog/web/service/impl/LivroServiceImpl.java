@@ -18,8 +18,6 @@ import java.util.Optional;
 @Component
 public class LivroServiceImpl implements LivroService {
     @Autowired
-    private EmprestimoRepository emprestimoRepository;
-    @Autowired
     private LivroRepository livroRepository;
     @Override
     public Livro incluir(Livro livro) {
@@ -70,40 +68,5 @@ public class LivroServiceImpl implements LivroService {
         return livroRepository.findAll();
     }
 
-    @Override
-    public Emprestimo incluirEmprestimo(Emprestimo emprestimo) {
-        emprestimo.setEmprestimoAtivo(true); // Define o empréstimo como ativo
-        return emprestimoRepository.save(emprestimo);
-    }
-
-    @Override
-    public List<Emprestimo> listarEmprestimosAtivos() {
-        return emprestimoRepository.findByEmprestimoAtivo(true);
-    }
-
-    @Override
-    public Emprestimo finalizarEmprestimo(long id) {
-        // Verificar se há o empréstimo no banco de dados
-        Optional<Emprestimo> emprestimoExistenteBD = emprestimoRepository.findById(id);
-        if (emprestimoExistenteBD.isPresent()) {
-            Emprestimo emprestimoExistente = emprestimoExistenteBD.get();
-
-            // Atualizar os atributos relevantes do objeto existente com os valores adequados
-            emprestimoExistente.setEmprestimoAtivo(false);
-            emprestimoExistente.setDataDevolucao(LocalDate.now()); // Definir a data de devolução como a data atual
-
-            // Salvar o objeto atualizado
-            return emprestimoRepository.save(emprestimoExistente);
-        } else {
-            // Empréstimo com o ID fornecido não encontrado
-            throw new NotFoundException("Emprestimo não encontrado");
-        }
-    }
-
-    @Override
-    public Emprestimo excluirEmprestimo(long id) {
-        Optional<Emprestimo> emprestimoExistenteBD = emprestimoRepository.findById(id);
-        return null;
-    }
 
 }
