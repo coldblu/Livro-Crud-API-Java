@@ -11,4 +11,6 @@ public interface EmprestimoService {
     public Emprestimo finalizarEmprestimo(long id);
     public Optional<Emprestimo> excluirEmprestimo(long id);
     public Optional<Emprestimo> buscarEmprestimo(long id);
+    public boolean verificarEmprestimoAtivo(long id);
+    public List<Emprestimo> listarEmprestimosFinalizados();
 }

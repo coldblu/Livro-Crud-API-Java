@@ -10,6 +10,7 @@ import org.webjars.NotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 @Service
 @Component
@@ -18,14 +19,21 @@ public class EmprestimoServiceImpl implements EmprestimoService {
     private EmprestimoRepository emprestimoRepository;
     @Override
     public Emprestimo incluirEmprestimo(Emprestimo emprestimo) {
-        emprestimo.setEmprestimoAtivo(true); // Define o empréstimo como ativo
+        emprestimo.setDataEmprestimo(LocalDate.now()); // Atualiza a data de empréstimo
         return emprestimoRepository.save(emprestimo);
     }
 
     @Override
     public List<Emprestimo> listarEmprestimosAtivos() {
-        return emprestimoRepository.findByEmprestimoAtivo(true);
+        LocalDate currentDate = LocalDate.now();
+        return emprestimoRepository.findByDataDevolucaoIsNullOrDataDevolucaoAfter(currentDate);
     }
+
+    public List<Emprestimo> listarEmprestimosFinalizados() {
+        LocalDate currentDate = LocalDate.now();
+        return emprestimoRepository.findByDataDevolucaoBefore(currentDate);
+    }
+
 
     @Override
     public Emprestimo finalizarEmprestimo(long id) {
@@ -34,8 +42,7 @@ public class EmprestimoServiceImpl implements EmprestimoService {
         if (emprestimoExistenteBD.isPresent()) {
             Emprestimo emprestimoExistente = emprestimoExistenteBD.get();
 
-            // Atualizar os atributos relevantes do objeto existente com os valores adequados
-            emprestimoExistente.setEmprestimoAtivo(false);
+            // Atualizar os atributos
             emprestimoExistente.setDataDevolucao(LocalDate.now()); // Definir a data de devolução como a data atual
 
             // Salvar o objeto atualizado
@@ -49,13 +56,26 @@ public class EmprestimoServiceImpl implements EmprestimoService {
     @Override
     public Optional<Emprestimo> excluirEmprestimo(long id) {
         Optional<Emprestimo> emprestimoExistenteBD = emprestimoRepository.findById(id);
-        emprestimoRepository.deleteById(id);
-        return null;
+
+        if (emprestimoExistenteBD.isPresent()) {
+            emprestimoRepository.deleteById(id);
+            return emprestimoExistenteBD;
+        } else {
+            throw new NoSuchElementException("O empréstimo com o ID " + id + " não foi encontrado.");
+        }
     }
+
 
     @Override
     public Optional<Emprestimo> buscarEmprestimo(long id) {
         Optional<Emprestimo> emprestimoDB = emprestimoRepository.findById(id);
         return emprestimoDB;
     }
+
+    @Override
+    public boolean verificarEmprestimoAtivo(long livroId) {
+        List<Emprestimo> emprestimosAtivos = emprestimoRepository.findByLivroIDAndDataDevolucaoIsNull(livroId);
+        return !emprestimosAtivos.isEmpty();
+    }
+
 }

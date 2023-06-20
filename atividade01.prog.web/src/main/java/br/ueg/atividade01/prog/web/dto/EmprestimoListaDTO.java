@@ -1,10 +1,8 @@
 package br.ueg.atividade01.prog.web.dto;
 
-import lombok.Data;
-
 import java.time.LocalDate;
 
-public @Data class EmprestimoDTO {
+public class EmprestimoListaDTO {
     private long idEmprestimo;
     private long livroID;
     private String nomePessoa;

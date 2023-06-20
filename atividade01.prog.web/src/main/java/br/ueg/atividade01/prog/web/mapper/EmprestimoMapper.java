@@ -10,5 +10,6 @@ import java.util.List;
 public interface EmprestimoMapper {
     EmprestimoDTO toEmprestimoDTO(Emprestimo emprestimo);
     Emprestimo toEmprestimoModel(EmprestimoDTO emprestimoDTO);
-    List<EmprestimoDTO> toListDTO();
+
+    List<EmprestimoDTO> toEmprestimoDTOList(List<Emprestimo> emprestimos);
 }

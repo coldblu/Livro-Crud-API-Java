@@ -37,6 +37,4 @@ public class Emprestimo {
     private LocalDate dataEmprestimo;
     @Column(name = "data_devolucao")
     private LocalDate dataDevolucao;
-    @Column(name = "emprestimo_ativo")
-    private boolean emprestimoAtivo;
 }
