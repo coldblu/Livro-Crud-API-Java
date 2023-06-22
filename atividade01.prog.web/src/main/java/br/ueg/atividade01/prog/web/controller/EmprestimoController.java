@@ -1,6 +1,7 @@
 package br.ueg.atividade01.prog.web.controller;
 
 import br.ueg.atividade01.prog.web.dto.EmprestimoDTO;
+import br.ueg.atividade01.prog.web.dto.EmprestimoListaDTO;
 import br.ueg.atividade01.prog.web.mapper.EmprestimoMapper;
 import br.ueg.atividade01.prog.web.model.Emprestimo;
 import br.ueg.atividade01.prog.web.service.EmprestimoService;
@@ -22,19 +23,20 @@ public class EmprestimoController {
     private EmprestimoMapper emprestimoMapper;
     @Autowired
     private EmprestimoService emprestimoService;
-    //Emprestimo
-    @GetMapping(path = "/emprestar/{id}")
+    //Emprestar
+    @PostMapping(path = "/emprestar")
     @Operation(description = "Emprestar livro.")
     @ApiResponse(responseCode = "200", description = "Emprestimo realizado com sucesso!",
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = EmprestimoDTO.class)))
     @ApiResponse(responseCode = "404", description = "Erro ao realizar emprestimo.")
-    public ResponseEntity<EmprestimoDTO> emprestar(@PathVariable EmprestimoDTO emprestimo) {
+    public ResponseEntity<EmprestimoDTO> emprestar(@RequestBody EmprestimoDTO emprestimo) {
         Emprestimo emprestimoIncluir = this.emprestimoMapper.toEmprestimoModel(emprestimo);
         emprestimoIncluir = this.emprestimoService.incluirEmprestimo(emprestimoIncluir);
         EmprestimoDTO emprestimoDTO = this.emprestimoMapper.toEmprestimoDTO(emprestimoIncluir);
         return ResponseEntity.ok(emprestimoDTO);
     }
+
 
     @PutMapping(path = "/devolucao/{id}")
     @Operation(description = "Método utilizado para finalizar um emprestimo.")
@@ -60,18 +62,18 @@ public class EmprestimoController {
     @GetMapping("/ativos")
     @Operation(description = "Listar empréstimos ativos")
     @ApiResponse(responseCode = "200", description = "Lista de empréstimos ativos")
-    public ResponseEntity<List<EmprestimoDTO>> listarEmprestimosAtivos() {
+    public ResponseEntity<List<EmprestimoListaDTO>> listarEmprestimosAtivos() {
         List<Emprestimo> emprestimosAtivos = emprestimoService.listarEmprestimosAtivos();
-        List<EmprestimoDTO> emprestimosAtivosDTO = emprestimoMapper.toEmprestimoDTOList(emprestimosAtivos);
+        List<EmprestimoListaDTO> emprestimosAtivosDTO = emprestimoMapper.toEmprestimoDTOList(emprestimosAtivos);
         return ResponseEntity.ok(emprestimosAtivosDTO);
     }
 
     @GetMapping("/finalizados")
     @Operation(description = "Listar empréstimos finalizados")
     @ApiResponse(responseCode = "200", description = "Lista de empréstimos finalizados")
-    public ResponseEntity<List<EmprestimoDTO>> listarEmprestimosFinalizados() {
+    public ResponseEntity<List<EmprestimoListaDTO>> listarEmprestimosFinalizados() {
         List<Emprestimo> emprestimosFinalizados = emprestimoService.listarEmprestimosFinalizados();
-        List<EmprestimoDTO> emprestimosFinalizadosDTO = emprestimoMapper.toEmprestimoDTOList(emprestimosFinalizados);
+        List<EmprestimoListaDTO> emprestimosFinalizadosDTO = emprestimoMapper.toEmprestimoDTOList(emprestimosFinalizados);
         return ResponseEntity.ok(emprestimosFinalizadosDTO);
     }
 

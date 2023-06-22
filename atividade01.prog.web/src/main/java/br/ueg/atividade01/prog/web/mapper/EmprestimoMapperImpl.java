@@ -1,6 +1,7 @@
 package br.ueg.atividade01.prog.web.mapper;
 
 import br.ueg.atividade01.prog.web.dto.EmprestimoDTO;
+import br.ueg.atividade01.prog.web.dto.EmprestimoListaDTO;
 import br.ueg.atividade01.prog.web.model.Emprestimo;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -35,11 +36,17 @@ public class EmprestimoMapperImpl implements EmprestimoMapper{
     }
 
     @Override
-    public List<EmprestimoDTO> toEmprestimoDTOList(List<Emprestimo> emprestimos) {
-        List<EmprestimoDTO> emprestimosDTO = new ArrayList<>();
+    public List<EmprestimoListaDTO> toEmprestimoDTOList(List<Emprestimo> emprestimos) {
+        List<EmprestimoListaDTO> emprestimosDTO = new ArrayList<>();
         if (!CollectionUtils.isEmpty(emprestimos)) {//Verifica se a lista nao e nula
             for (Emprestimo emprestimo : emprestimos) {
-                emprestimosDTO.add(toEmprestimoDTO(emprestimo));
+                EmprestimoListaDTO emprestimoListaDTO = new EmprestimoListaDTO();
+                emprestimoListaDTO.setIdEmprestimo(emprestimo.getIdEmprestimo());
+                emprestimoListaDTO.setLivroID(emprestimo.getLivroID());
+                emprestimoListaDTO.setNomePessoa(emprestimo.getNomePessoa());
+                emprestimoListaDTO.setDataEmprestimo(emprestimo.getDataEmprestimo());
+                emprestimoListaDTO.setDataDevolucao(emprestimo.getDataDevolucao());
+                emprestimosDTO.add(emprestimoListaDTO);
             }
         }
         return emprestimosDTO;

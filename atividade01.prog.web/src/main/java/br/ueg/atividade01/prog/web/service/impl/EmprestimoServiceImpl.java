@@ -26,13 +26,15 @@ public class EmprestimoServiceImpl implements EmprestimoService {
     @Override
     public List<Emprestimo> listarEmprestimosAtivos() {
         LocalDate currentDate = LocalDate.now();
-        return emprestimoRepository.findByDataDevolucaoIsNullOrDataDevolucaoAfter(currentDate);
+        return emprestimoRepository.findAllByDataDevolucaoIsNullOrDataDevolucaoAfter(currentDate);
     }
 
     public List<Emprestimo> listarEmprestimosFinalizados() {
         LocalDate currentDate = LocalDate.now();
-        return emprestimoRepository.findByDataDevolucaoBefore(currentDate);
+        LocalDate currentDatePlusOneDay = currentDate.plusDays(1);
+        return emprestimoRepository.findAllByDataDevolucaoBefore(currentDatePlusOneDay);
     }
+
 
 
     @Override

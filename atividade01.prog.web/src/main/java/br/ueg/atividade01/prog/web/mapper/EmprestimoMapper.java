@@ -1,6 +1,7 @@
 package br.ueg.atividade01.prog.web.mapper;
 
 import br.ueg.atividade01.prog.web.dto.EmprestimoDTO;
+import br.ueg.atividade01.prog.web.dto.EmprestimoListaDTO;
 import br.ueg.atividade01.prog.web.model.Emprestimo;
 import org.mapstruct.Mapper;
 
@@ -11,5 +12,5 @@ public interface EmprestimoMapper {
     EmprestimoDTO toEmprestimoDTO(Emprestimo emprestimo);
     Emprestimo toEmprestimoModel(EmprestimoDTO emprestimoDTO);
 
-    List<EmprestimoDTO> toEmprestimoDTOList(List<Emprestimo> emprestimos);
+    List<EmprestimoListaDTO> toEmprestimoDTOList(List<Emprestimo> emprestimos);
 }
