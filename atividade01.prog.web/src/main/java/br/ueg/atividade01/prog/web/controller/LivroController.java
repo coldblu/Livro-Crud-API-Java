@@ -40,8 +40,8 @@ public class LivroController {
     @ApiResponse(responseCode = "400", description = "Nao encontrado",
             content = @Content(mediaType = "application/json"))
     public ResponseEntity<List<LivroListaDTO>> listAll(){
-        List<Livro> livros = livroService.listarTodosLivros();
-        return ResponseEntity.ok(livroMapper.toDTO(livros));
+        List<LivroListaDTO> livros = livroService.listarTodosLivros();
+        return ResponseEntity.ok(livros);
     }
 
     @PostMapping(path="/incluir")

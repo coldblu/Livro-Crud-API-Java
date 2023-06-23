@@ -1,5 +1,7 @@
 package br.ueg.atividade01.prog.web.service.impl;
 
+import br.ueg.atividade01.prog.web.dto.LivroListaDTO;
+import br.ueg.atividade01.prog.web.mapper.LivroMapper;
 import br.ueg.atividade01.prog.web.model.Emprestimo;
 import br.ueg.atividade01.prog.web.model.Livro;
 import br.ueg.atividade01.prog.web.repository.EmprestimoRepository;
@@ -19,6 +21,10 @@ import java.util.Optional;
 public class LivroServiceImpl implements LivroService {
     @Autowired
     private LivroRepository livroRepository;
+    @Autowired
+    private EmprestimoRepository emprestimoRepository;
+    @Autowired
+    private LivroMapper livroMapper;
     @Override
     public Livro incluir(Livro livro) {
         return this.inserirDados(livro);
@@ -64,8 +70,14 @@ public class LivroServiceImpl implements LivroService {
     }
 
     @Override
-    public List<Livro> listarTodosLivros() {
-        return livroRepository.findAll();
+    public List<LivroListaDTO> listarTodosLivros() {
+        List<LivroListaDTO> lista = livroMapper.toDTO(livroRepository.findAll());
+        lista.forEach(livroListaDTO -> {
+            List<Emprestimo> listaEmprestimo = emprestimoRepository.findByLivroIDAndDataDevolucaoIsNull(livroListaDTO.getIdLivro());
+            livroListaDTO.setEmprestado(!listaEmprestimo.isEmpty());
+
+        });
+        return lista;
     }
 
 

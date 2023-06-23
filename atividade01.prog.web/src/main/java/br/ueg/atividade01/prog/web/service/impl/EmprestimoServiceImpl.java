@@ -19,8 +19,14 @@ public class EmprestimoServiceImpl implements EmprestimoService {
     private EmprestimoRepository emprestimoRepository;
     @Override
     public Emprestimo incluirEmprestimo(Emprestimo emprestimo) {
-        emprestimo.setDataEmprestimo(LocalDate.now()); // Atualiza a data de empréstimo
-        return emprestimoRepository.save(emprestimo);
+        boolean estaAtivo = verificarEmprestimoAtivo(emprestimo.getIdEmprestimo());
+        if(!estaAtivo){
+            emprestimo.setDataEmprestimo(LocalDate.now()); // Atualiza a data de empréstimo
+            return emprestimoRepository.save(emprestimo);
+        }else {
+            throw new IllegalArgumentException("Há emprestimos ativos do livro.");
+        }
+
     }
 
     @Override

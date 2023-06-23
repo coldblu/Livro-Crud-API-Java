@@ -8,4 +8,5 @@ public @Data class LivroListaDTO {
     private String autor;
     private int anoPublicacao;
     private String editora;
+    private Boolean emprestado;
 }

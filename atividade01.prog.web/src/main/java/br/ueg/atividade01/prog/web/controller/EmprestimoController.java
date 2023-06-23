@@ -6,6 +6,7 @@ import br.ueg.atividade01.prog.web.mapper.EmprestimoMapper;
 import br.ueg.atividade01.prog.web.model.Emprestimo;
 import br.ueg.atividade01.prog.web.service.EmprestimoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -61,7 +62,9 @@ public class EmprestimoController {
 
     @GetMapping("/ativos")
     @Operation(description = "Listar empréstimos ativos")
-    @ApiResponse(responseCode = "200", description = "Lista de empréstimos ativos")
+    @ApiResponse(responseCode = "200", description = "Lista de empréstimos ativos",
+            content = @Content(mediaType = "application/json",
+                    array=@ArraySchema(schema = @Schema(implementation = EmprestimoListaDTO.class))))
     public ResponseEntity<List<EmprestimoListaDTO>> listarEmprestimosAtivos() {
         List<Emprestimo> emprestimosAtivos = emprestimoService.listarEmprestimosAtivos();
         List<EmprestimoListaDTO> emprestimosAtivosDTO = emprestimoMapper.toEmprestimoDTOList(emprestimosAtivos);
@@ -70,7 +73,9 @@ public class EmprestimoController {
 
     @GetMapping("/finalizados")
     @Operation(description = "Listar empréstimos finalizados")
-    @ApiResponse(responseCode = "200", description = "Lista de empréstimos finalizados")
+    @ApiResponse(responseCode = "200", description = "Lista de empréstimos ativos",
+            content = @Content(mediaType = "application/json",
+                    array=@ArraySchema(schema = @Schema(implementation = EmprestimoListaDTO.class))))
     public ResponseEntity<List<EmprestimoListaDTO>> listarEmprestimosFinalizados() {
         List<Emprestimo> emprestimosFinalizados = emprestimoService.listarEmprestimosFinalizados();
         List<EmprestimoListaDTO> emprestimosFinalizadosDTO = emprestimoMapper.toEmprestimoDTOList(emprestimosFinalizados);
