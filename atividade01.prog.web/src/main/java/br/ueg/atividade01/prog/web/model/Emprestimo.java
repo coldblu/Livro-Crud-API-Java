@@ -29,10 +29,15 @@ public class Emprestimo {
     @Id
     @Column(name = "id_emprestimo")
     private long idEmprestimo;
-    @Column(name = "livro_id", nullable = false)
+    //Many to one
+    @ManyToOne
+    @JoinColumn(name = "livro_id", referencedColumnName = "id_livro")
     private long livroID;
-    @Column(name = "nome_pessoa", length = 100, nullable = false)
-    private String nomePessoa;
+    @ManyToOne
+    @JoinColumn(name = "pessoa_id", referencedColumnName = "id_pessoa")
+    private long pessoaID;
+
+
     @Column(name = "data_emprestimo", nullable = false)
     private LocalDate dataEmprestimo;
     @Column(name = "data_devolucao")

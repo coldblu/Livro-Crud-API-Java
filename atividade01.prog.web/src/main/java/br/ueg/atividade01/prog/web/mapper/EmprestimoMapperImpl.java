@@ -17,7 +17,7 @@ public class EmprestimoMapperImpl implements EmprestimoMapper{
         EmprestimoDTO emprestimoDTO = new EmprestimoDTO();
         emprestimoDTO.setIdEmprestimo(emprestimo.getIdEmprestimo());
         emprestimoDTO.setLivroID(emprestimo.getLivroID());
-        emprestimoDTO.setNomePessoa(emprestimo.getNomePessoa());
+        emprestimoDTO.setPessoaID(emprestimo.getPessoaID());
         emprestimoDTO.setDataEmprestimo(emprestimo.getDataEmprestimo());
         emprestimoDTO.setDataDevolucao(emprestimo.getDataDevolucao());
 
@@ -29,7 +29,7 @@ public class EmprestimoMapperImpl implements EmprestimoMapper{
         Emprestimo emprestimo = new Emprestimo();
         emprestimo.setIdEmprestimo(emprestimoDTO.getIdEmprestimo());
         emprestimo.setLivroID(emprestimoDTO.getLivroID());
-        emprestimo.setNomePessoa(emprestimoDTO.getNomePessoa());
+        emprestimo.setPessoaID(emprestimoDTO.getPessoaID());
         emprestimo.setDataEmprestimo(emprestimoDTO.getDataEmprestimo());
         emprestimo.setDataDevolucao(emprestimoDTO.getDataDevolucao());
         return emprestimo;
@@ -43,7 +43,7 @@ public class EmprestimoMapperImpl implements EmprestimoMapper{
                 EmprestimoListaDTO emprestimoListaDTO = new EmprestimoListaDTO();
                 emprestimoListaDTO.setIdEmprestimo(emprestimo.getIdEmprestimo());
                 emprestimoListaDTO.setLivroID(emprestimo.getLivroID());
-                emprestimoListaDTO.setNomePessoa(emprestimo.getNomePessoa());
+                emprestimoListaDTO.setPessoaID(emprestimo.getPessoaID());
                 emprestimoListaDTO.setDataEmprestimo(emprestimo.getDataEmprestimo());
                 emprestimoListaDTO.setDataDevolucao(emprestimo.getDataDevolucao());
                 emprestimosDTO.add(emprestimoListaDTO);

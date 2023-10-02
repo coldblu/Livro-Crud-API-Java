@@ -1,2 +1,4 @@
-package br.ueg.atividade01.prog.web.mapper;public interface PessoaMapper {
+package br.ueg.atividade01.prog.web.mapper;
+
+public interface PessoaMapper {
 }
