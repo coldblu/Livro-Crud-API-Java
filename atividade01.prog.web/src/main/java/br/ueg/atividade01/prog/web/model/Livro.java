@@ -25,7 +25,6 @@ public class Livro {
             strategy = SEQUENCE,
             generator = "a_gerador_sequence"
     )
-
     @Id
     @Column(name = "id_livro")
     private long idLivro;

@@ -6,10 +6,11 @@ import br.ueg.atividade01.prog.web.model.Pessoa;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PessoaMapperImpl implements PessoaMapper{
     @Override
-    public PessoaDTO toPessoaDTO(Pessoa pessoa) {
+    public PessoaDTO toPessoaDTO(Optional<Pessoa> pessoa) {
         PessoaDTO pessoaDTO = new PessoaDTO();
         pessoaDTO.setIdPessoa(pessoa.getIdPessoa());
         pessoaDTO.setNomePessoa(pessoa.getNomePessoa());

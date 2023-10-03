@@ -3,6 +3,8 @@ package br.ueg.atividade01.prog.web.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import static jakarta.persistence.GenerationType.SEQUENCE;
+
 @Data
 @Entity
 @Table(name = "usuario",
@@ -12,6 +14,15 @@ import lombok.Data;
 )
 public class Usuario {
     public static final String UK_USUARIO = "uk_usuario";
+    @SequenceGenerator(
+            name="a_gerador_sequence",
+            sequenceName = "amigo_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = SEQUENCE,
+            generator = "a_gerador_sequence"
+    )
     @Id
     @Column(name = "id_usuario")
     private long idUsuario;
