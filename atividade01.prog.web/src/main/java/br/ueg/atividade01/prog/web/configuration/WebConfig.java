@@ -29,11 +29,11 @@ public class WebConfig extends ApiWebConfig {
 	/*@Bean
 	public MethodValidationPostProcessor methodValidationPostProcessor() {
 		return new MethodValidationPostProcessor();
-	}*/
+	}
 
 	@Override
 	public CorsFilter corsFilter() {
 		CorsFilter corsFilter = super.corsFilter();
 		return corsFilter;
-	}
+	}*/
 }

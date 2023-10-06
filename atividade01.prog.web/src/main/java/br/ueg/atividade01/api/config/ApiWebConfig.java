@@ -8,6 +8,7 @@
  */
 package br.ueg.atividade01.api.config;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
@@ -26,7 +27,7 @@ public class ApiWebConfig {
 	 * 'CORS' de forma global na aplicação.
 	 * 
 	 * @return
-	 */
+
 	@Bean
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -41,5 +42,23 @@ public class ApiWebConfig {
 		config.addAllowedMethod(HttpMethod.OPTIONS);
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
+	} */
+
+	@Bean
+	public FilterRegistrationBean corsFilter() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", this.getCorsConfiguration());
+		FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
+		bean.setOrder(0);
+		return bean;
+	}
+
+	public CorsConfiguration getCorsConfiguration() {
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowCredentials(true);
+		config.addAllowedOriginPattern("http://*");
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
+		return config;
 	}
 }

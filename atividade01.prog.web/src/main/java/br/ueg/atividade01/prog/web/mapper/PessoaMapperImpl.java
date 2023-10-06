@@ -10,13 +10,25 @@ import java.util.Optional;
 
 public class PessoaMapperImpl implements PessoaMapper{
     @Override
-    public PessoaDTO toPessoaDTO(Optional<Pessoa> pessoa) {
+    public PessoaDTO toPessoaDTO(Pessoa pessoa) {
         PessoaDTO pessoaDTO = new PessoaDTO();
         pessoaDTO.setIdPessoa(pessoa.getIdPessoa());
         pessoaDTO.setNomePessoa(pessoa.getNomePessoa());
         pessoaDTO.setEmailPessoa(pessoa.getEmailPessoa());
 
         return pessoaDTO;
+    }
+
+    @Override
+    public PessoaDTO toPessoaDTO(Optional<Pessoa> pessoa) {
+        if (pessoa.isPresent()){
+            PessoaDTO pessoaDTO = new PessoaDTO();
+            pessoaDTO.setIdPessoa(pessoa.getIdPessoa());
+            pessoaDTO.setNomePessoa(pessoa.getNomePessoa());
+            pessoaDTO.setEmailPessoa(pessoa.getEmailPessoa());
+            return pessoaDTO;
+        }
+
     }
 
     @Override

@@ -2,11 +2,13 @@ package br.ueg.atividade01.prog.web.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Data
 @Entity
+@Getter
 @Table(name = "usuario",
         uniqueConstraints = {
                 @UniqueConstraint(name= Usuario.UK_USUARIO, columnNames = "id_usuario" )

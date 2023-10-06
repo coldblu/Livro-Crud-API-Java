@@ -80,7 +80,7 @@ public class Application {
 				e.printStackTrace();
 			}
 
-
+			/*
 			//Emprestimo
 			Emprestimo emprestimo = new Emprestimo();
 			//Prmeiro
@@ -124,9 +124,9 @@ public class Application {
 			//Quinto
 			emprestimo = new Emprestimo();
 			emprestimo.setLivroID(1);
-			emprestimo.setNomePessoa("Hans Aus");
+			emprestimo.setCpf("Hans Aus");
 
-			emprestimo = emprestimoService.incluirEmprestimo(emprestimo);
+			emprestimo = emprestimoService.incluirEmprestimo(emprestimo);*/
 
 		};
 	}
