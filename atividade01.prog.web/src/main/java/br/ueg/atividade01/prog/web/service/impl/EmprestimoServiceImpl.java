@@ -82,7 +82,7 @@ public class EmprestimoServiceImpl implements EmprestimoService {
 
     @Override
     public boolean verificarEmprestimoAtivo(long livroId) {
-        List<Emprestimo> emprestimosAtivos = emprestimoRepository.findByLivroIDAndDataDevolucaoIsNull(livroId);
+        List<Emprestimo> emprestimosAtivos = emprestimoRepository.findByLivroAndDataDevolucaoIsNull(livroId);
         return !emprestimosAtivos.isEmpty();
     }
 

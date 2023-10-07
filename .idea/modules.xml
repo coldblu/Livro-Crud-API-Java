@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Livro-Crud-API-Java.iml" filepath="$PROJECT_DIR$/.idea/Livro-Crud-API-Java.iml" />
-      <module fileurl="file://$PROJECT_DIR$/atividade01.prog.web/atividade01.prog.web.iml" filepath="$PROJECT_DIR$/atividade01.prog.web/atividade01.prog.web.iml" />
     </modules>
   </component>
 </project>

@@ -1,21 +1,22 @@
 package br.ueg.atividade01.prog.web.model;
 
+import br.ueg.prog.webi.api.model.BaseEntidade;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Getter
-@Table(name = "usuario",
-        uniqueConstraints = {
-                @UniqueConstraint(name= Usuario.UK_USUARIO, columnNames = "id_usuario" )
-        }
-)
-public class Usuario {
-    public static final String UK_USUARIO = "uk_usuario";
+@Table(name = "usuario")
+public class Usuario extends BaseEntidade<Long> {
+    public static final class Coluna {
+        public static final String ID = "userid";
+    }
     @SequenceGenerator(
             name="a_gerador_sequence",
             sequenceName = "amigo_sequence",
@@ -26,13 +27,34 @@ public class Usuario {
             generator = "a_gerador_sequence"
     )
     @Id
-    @Column(name = "id_usuario")
-    private long idUsuario;
+    @Column(name = Coluna.ID)
+    private Long idUsuario;
 
     @Column(name = "email_usuario", unique = true, nullable = false)
     private String emailUsuario;
 
     @Column(name = "usuario_senha")
     private String senhaUsuario;
+
+    @Column(name = "status", nullable = false)
+    private boolean status;
+
+    @Column(name = "role", length = 200, nullable = true)
+    private String role;
+
+    @Override
+    public String getTabelaNome() {
+        return "usuario";
+    }
+
+    @Override
+    public Long getId() {
+        return idUsuario;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.idUsuario = id;
+    }
 
 }

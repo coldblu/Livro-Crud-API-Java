@@ -1,16 +1,19 @@
 package br.ueg.atividade01.prog.web.service.impl;
 
-import br.ueg.atividade01.prog.web.dto.PessoaListaDTO;
+import br.ueg.atividade01.prog.web.dto.PessoaDTO;
 import br.ueg.atividade01.prog.web.mapper.PessoaMapper;
 import br.ueg.atividade01.prog.web.model.Pessoa;
 import br.ueg.atividade01.prog.web.repository.PessoaRepository;
 import br.ueg.atividade01.prog.web.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
+@Component
 public class PessoaServiceImpl implements PessoaService {
     @Autowired
     private PessoaRepository pessoaRepository;
@@ -54,8 +57,8 @@ public class PessoaServiceImpl implements PessoaService {
     }
 
     @Override
-    public List<PessoaListaDTO> listarTodasPessoas() {
-        List<PessoaListaDTO> listaPessoas = pessoaMapper.toListaPessoaDTO(pessoaRepository.findAll());
+    public List<PessoaDTO> listarTodasPessoas() {
+        List<PessoaDTO> listaPessoas = pessoaMapper.toDTO(pessoaRepository.findAll());
         return listaPessoas;
     }
 }

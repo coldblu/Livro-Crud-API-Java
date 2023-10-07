@@ -10,7 +10,7 @@ import java.util.List;
 public interface EmprestimoRepository extends JpaRepository<Emprestimo, Long> {
 
 
-    List<Emprestimo> findByLivroIDAndDataDevolucaoIsNull(long id);
+    List<Emprestimo> findByLivroAndDataDevolucaoIsNull(long id);
 
     List<Emprestimo> findAllByDataDevolucaoBefore(LocalDate currentDate);
 
