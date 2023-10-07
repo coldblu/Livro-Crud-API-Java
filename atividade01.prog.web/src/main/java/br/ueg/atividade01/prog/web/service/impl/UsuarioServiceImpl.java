@@ -50,6 +50,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Optional<Usuario> buscarUsuarioPeloEmail(String email) {
-        return Optional.empty();
+        return usuarioRepository.findUsuarioByEmailUsuario(email);
     }
 }

@@ -13,6 +13,5 @@ public interface UsuarioMapper extends BaseMapper<Usuario, UsuarioDTO> {
     @Mapping(target = "email", source = "emailUsuario")
     @Mapping(target = "senha", source = "senhaUsuario")
     @Mapping(target = "id", source = "idUsuario")
-    @Mapping(target = "")
     public CredencialDTO toCredentialDTO(Usuario usuario);
 }
