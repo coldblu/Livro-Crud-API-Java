@@ -1,6 +1,6 @@
 package br.ueg.atividade01.prog.web.service.impl;
 
-import br.ueg.atividade01.prog.web.dto.PessoaListaDTO;
+import br.ueg.atividade01.prog.web.dto.PessoaDTO;
 import br.ueg.atividade01.prog.web.mapper.PessoaMapper;
 import br.ueg.atividade01.prog.web.model.Pessoa;
 import br.ueg.atividade01.prog.web.repository.PessoaRepository;
@@ -54,8 +54,8 @@ public class PessoaServiceImpl implements PessoaService {
     }
 
     @Override
-    public List<PessoaListaDTO> listarTodasPessoas() {
-        List<PessoaListaDTO> listaPessoas = pessoaMapper.toListaPessoaDTO(pessoaRepository.findAll());
+    public List<PessoaDTO> listarTodasPessoas() {
+        List<PessoaDTO> listaPessoas = pessoaMapper.toDTO(pessoaRepository.findAll());
         return listaPessoas;
     }
 }

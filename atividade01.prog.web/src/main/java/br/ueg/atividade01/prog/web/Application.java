@@ -14,8 +14,11 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import java.time.LocalDate;
 
 
-@SpringBootApplication
-@EntityScan(basePackageClasses = { Jsr310JpaConverters.class }, basePackages = "br.ueg.atividade01.prog.web.model")
+@SpringBootApplication(scanBasePackages = {
+		"br.ueg.atividade01.*", // modificar conforme o pacote padrão do seu projeto
+		"br.ueg.prog.webi.*" //Para funcionamento da Arquitetura
+})
+@EntityScan(basePackageClasses = { Jsr310JpaConverters.class }, basePackages ={"br.ueg.atividade01.prog.web.model","br.ueg.prog.webi.api.*"})
 public class Application {
 	private final LivroRepository livroRepository;
 	private final EmprestimoServiceImpl emprestimoService;
@@ -124,10 +127,10 @@ public class Application {
 			//Quinto
 			emprestimo = new Emprestimo();
 			emprestimo.setLivroID(1);
-			emprestimo.setCpf("Hans Aus");
+			emprestimo.setNomePessoa("Hans Aus");
 
-			emprestimo = emprestimoService.incluirEmprestimo(emprestimo);*/
-
+			emprestimo = emprestimoService.incluirEmprestimo(emprestimo);
+			*/
 		};
 	}
 

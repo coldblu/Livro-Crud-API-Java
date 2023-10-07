@@ -32,14 +32,14 @@ public class PessoaController {
                     schema = @Schema(implementation = PessoaDTO.class)))
     public ResponseEntity<PessoaDTO> incluirPessoa(@RequestBody PessoaDTO pessoaDTO){
         //prepração para entrada.
-        Pessoa novaPessoa = this.pessoaMapper.toPessoaModel(pessoaDTO);
+        Pessoa novaPessoa = this.pessoaMapper.toModelo(pessoaDTO);
 
         //chamada do serviço
         System.out.println(novaPessoa);
         novaPessoa = this.pessoaService.incluirPessoa(novaPessoa);
 
         //preparação para o retorno
-        PessoaDTO pessoaDto = this.pessoaMapper.toPessoaDTO(Optional.ofNullable(novaPessoa));
+        PessoaDTO pessoaDto = this.pessoaMapper.toDTO(novaPessoa);
         return ResponseEntity.ok(pessoaDto);
     }
 
@@ -50,9 +50,10 @@ public class PessoaController {
                     schema = @Schema(implementation = PessoaDTO.class)))
     @ApiResponse(responseCode = "404", description = "Pessoa não encontrada")
     public ResponseEntity<PessoaDTO> buscarPessoa(@PathVariable(name = "id") long id) {
-        Optional<Pessoa> pessoa = pessoaService.buscarPessoaPeloId(id);
-        if (pessoa.isPresent()) {
-            PessoaDTO pessoaDTO = pessoaMapper.toPessoaDTO(pessoa);
+        Optional<Pessoa> pessoaOptional = pessoaService.buscarPessoaPeloId(id);
+        if (pessoaOptional.isPresent()) {
+            Pessoa pessoa = pessoaOptional.get();
+            PessoaDTO pessoaDTO = pessoaMapper.toDTO(pessoa);
             return ResponseEntity.ok(pessoaDTO);
         } else {
             throw new IllegalArgumentException("Pessoa não encontrada");

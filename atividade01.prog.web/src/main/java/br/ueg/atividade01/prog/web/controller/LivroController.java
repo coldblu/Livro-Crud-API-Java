@@ -91,8 +91,9 @@ public class LivroController {
                     schema = @Schema(implementation = LivroDTO.class)))
     @ApiResponse(responseCode = "404", description = "Livro não encontrado")
     public ResponseEntity<LivroDTO> buscar(@PathVariable(name = "id") long id) {
-        Optional<Livro> livro = livroService.buscarLivro(id);
-        if (livro.isPresent()) {
+        Optional<Livro> livroOptional = livroService.buscarLivro(id);
+        if (livroOptional.isPresent()) {
+            Livro livro = livroOptional.get();
             LivroDTO livroDTO = livroMapper.toDTO(livro);
             return ResponseEntity.ok(livroDTO);
         } else {

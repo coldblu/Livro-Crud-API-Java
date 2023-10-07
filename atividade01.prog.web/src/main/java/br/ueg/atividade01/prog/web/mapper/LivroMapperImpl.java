@@ -77,7 +77,7 @@ public class LivroMapperImpl implements LivroMapper{
         livroDTO.setDataDeRegistro(livro.getDataDeRegistro());
         return livroDTO;
     }
-
+    /*
     @Override
     public LivroDTO toDTO(Optional<Livro> livro) {
         LivroDTO livroDTO = new LivroDTO();
@@ -93,5 +93,5 @@ public class LivroMapperImpl implements LivroMapper{
             livroDTO.setDataDeRegistro(l.getDataDeRegistro());
         }
         return livroDTO;
-    }
+    }*/
 }
