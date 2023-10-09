@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,7 +73,7 @@ public class LivroServiceImpl implements LivroService {
     public List<LivroListaDTO> listarTodosLivros() {
         List<LivroListaDTO> lista = livroMapper.toDTO(livroRepository.findAll());
         lista.forEach(livroListaDTO -> {
-            List<Emprestimo> listaEmprestimo = emprestimoRepository.findByLivroAndDataDevolucaoIsNull(livroListaDTO.getIdLivro());
+            List<Emprestimo> listaEmprestimo = emprestimoRepository.findByLivroIDAndDataDevolucaoIsNull(livroListaDTO.getIdLivro());
             livroListaDTO.setEmprestado(!listaEmprestimo.isEmpty());
 
         });

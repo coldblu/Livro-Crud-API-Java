@@ -8,28 +8,22 @@
  */
 package br.ueg.atividade01.prog.web.configuration;
 
-
-import br.ueg.prog.webi.api.config.ApiWebConfig;
+import br.ueg.atividade01.api.config.ApiWebConfig;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
+import org.springframework.web.filter.CorsFilter;
 
 /**
  * Classe de configuração referente aos recursos Web MVC da aplicação.
- *
+ * 
  * @author UEG
  */
 @Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
-
 public class WebConfig extends ApiWebConfig {
 
 	/**
 	 * Retorna a instância {@link MethodValidationPostProcessor}.
-	 *
+	 * 
 	 * @return
 	 */
 	/*@Bean
@@ -37,4 +31,9 @@ public class WebConfig extends ApiWebConfig {
 		return new MethodValidationPostProcessor();
 	}*/
 
+	@Override
+	public CorsFilter corsFilter() {
+		CorsFilter corsFilter = super.corsFilter();
+		return corsFilter;
+	}
 }

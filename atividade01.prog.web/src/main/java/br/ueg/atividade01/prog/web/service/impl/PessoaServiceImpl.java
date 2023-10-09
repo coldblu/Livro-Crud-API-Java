@@ -6,14 +6,11 @@ import br.ueg.atividade01.prog.web.model.Pessoa;
 import br.ueg.atividade01.prog.web.repository.PessoaRepository;
 import br.ueg.atividade01.prog.web.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
-@Service
-@Component
+
 public class PessoaServiceImpl implements PessoaService {
     @Autowired
     private PessoaRepository pessoaRepository;
