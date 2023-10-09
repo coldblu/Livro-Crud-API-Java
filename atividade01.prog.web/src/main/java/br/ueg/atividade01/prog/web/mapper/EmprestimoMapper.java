@@ -4,13 +4,13 @@ import br.ueg.atividade01.prog.web.dto.EmprestimoDTO;
 import br.ueg.atividade01.prog.web.dto.EmprestimoListaDTO;
 import br.ueg.atividade01.prog.web.model.Emprestimo;
 import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-//@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+//@Mapper(componentModel = "spring")
 public interface EmprestimoMapper {
     EmprestimoDTO toEmprestimoDTO(Emprestimo emprestimo);
     Emprestimo toEmprestimoModel(EmprestimoDTO emprestimoDTO);
+
     List<EmprestimoListaDTO> toEmprestimoDTOList(List<Emprestimo> emprestimos);
 }

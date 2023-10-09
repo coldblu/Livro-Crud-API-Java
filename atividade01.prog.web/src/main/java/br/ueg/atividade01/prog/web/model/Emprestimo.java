@@ -29,15 +29,14 @@ public class Emprestimo {
     @Id
     @Column(name = "id_emprestimo")
     private long idEmprestimo;
-    //Many to one
+    //ManyToOne
     @ManyToOne
     @JoinColumn(name = "livro_id", referencedColumnName = "id_livro")
-    private Livro livro; // Use a entidade Livro aqui em vez de long
+    private Livro livro;
 
     @ManyToOne
     @JoinColumn(name = "pessoa_id", referencedColumnName = "id_pessoa")
-    private Pessoa pessoa; // Use a entidade Pessoa aqui em vez de long
-
+    private Pessoa pessoa;
 
 
     @Column(name = "data_emprestimo", nullable = false)

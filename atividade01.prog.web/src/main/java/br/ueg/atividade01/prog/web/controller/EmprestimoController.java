@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "${app.api.base}/livro")
+//@PreAuthorize(value = "isAuthenticated()")
 public class EmprestimoController {
     @Autowired
     private EmprestimoMapper emprestimoMapper;
@@ -67,6 +69,17 @@ public class EmprestimoController {
                     array=@ArraySchema(schema = @Schema(implementation = EmprestimoListaDTO.class))))
     public ResponseEntity<List<EmprestimoListaDTO>> listarEmprestimosAtivos() {
         List<Emprestimo> emprestimosAtivos = emprestimoService.listarEmprestimosAtivos();
+        List<EmprestimoListaDTO> emprestimosAtivosDTO = emprestimoMapper.toEmprestimoDTOList(emprestimosAtivos);
+        return ResponseEntity.ok(emprestimosAtivosDTO);
+    }
+
+    @GetMapping("/ativosDePessoa")
+    @Operation(description = "Listar empréstimos ativos de uma pessoa")
+    @ApiResponse(responseCode = "200", description = "Lista de empréstimos ativos",
+            content = @Content(mediaType = "application/json",
+                    array=@ArraySchema(schema = @Schema(implementation = EmprestimoListaDTO.class))))
+    public ResponseEntity<List<EmprestimoListaDTO>> listarEmprestimosAtivosDaPessoa(@PathVariable(name = "id") long id ) {
+        List<Emprestimo> emprestimosAtivos = emprestimoService.listarEmprestimosAtivosDaPessoa(id);
         List<EmprestimoListaDTO> emprestimosAtivosDTO = emprestimoMapper.toEmprestimoDTOList(emprestimosAtivos);
         return ResponseEntity.ok(emprestimosAtivosDTO);
     }

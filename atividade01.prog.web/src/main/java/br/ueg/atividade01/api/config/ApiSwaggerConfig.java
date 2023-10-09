@@ -28,6 +28,8 @@ public class ApiSwaggerConfig {
 
 	public static final String SWAGGER_LICENSE = "Apache License 2.0";
 
+	static final String BEARER_AUTH = "bearerAuth";
+
 	@Value("${app.api.swagger.title}")
 	private String title;
 
@@ -44,8 +46,14 @@ public class ApiSwaggerConfig {
 	@Bean
 	public OpenAPI customOpenAPI(@Value("${springdoc.version}") String appVersion) {
 		return new OpenAPI()
-				.components(new Components().addSecuritySchemes("basicScheme",
-						new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))
+				.components(new Components().addSecuritySchemes(BEARER_AUTH,
+						new SecurityScheme()
+								.name(BEARER_AUTH)
+								.type(SecurityScheme.Type.HTTP)
+								.scheme("bearer")
+								.bearerFormat("JWT")
+								.in(SecurityScheme.In.HEADER)
+				))
 				.info(new Info()
 						.title(this.title)
 						.version(appVersion)

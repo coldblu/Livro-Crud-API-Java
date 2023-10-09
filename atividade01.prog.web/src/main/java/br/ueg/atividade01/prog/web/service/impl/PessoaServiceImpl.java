@@ -1,15 +1,20 @@
 package br.ueg.atividade01.prog.web.service.impl;
 
-import br.ueg.atividade01.prog.web.dto.PessoaDTO;
+import br.ueg.atividade01.prog.web.dto.PessoaListaDTO;
 import br.ueg.atividade01.prog.web.mapper.PessoaMapper;
 import br.ueg.atividade01.prog.web.model.Pessoa;
 import br.ueg.atividade01.prog.web.repository.PessoaRepository;
 import br.ueg.atividade01.prog.web.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
+
+@Service
+@Component
 
 public class PessoaServiceImpl implements PessoaService {
     @Autowired
@@ -23,12 +28,11 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Override
     public Pessoa alterarPessoa(Pessoa pessoa, long idPessoa) {
-        Optional<Pessoa> pessoaBD = pessoaRepository.findPessoaByIdPessoa(idPessoa);
-        if(pessoaBD.isPresent()){
-            Pessoa pessoaAlterar = pessoaBD.get();
-            pessoaAlterar.setNomePessoa(pessoa.getNomePessoa());
-            pessoaAlterar.setEmailPessoa(pessoa.getEmailPessoa());
-            return pessoaRepository.save(pessoaAlterar);
+        Pessoa pessoaBD = pessoaRepository.findPessoaByIdPessoa(idPessoa);
+        if(pessoaBD != null){
+            pessoaBD.setNomePessoa(pessoa.getNomePessoa());
+            pessoaBD.setEmailPessoa(pessoa.getEmailPessoa());
+            return pessoaRepository.save(pessoaBD);
         } else {
             throw new NotFoundException("Pessoa não encontrado");
         }
@@ -36,26 +40,23 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Override
     public Optional<Pessoa> buscarPessoaPeloId(long idPessoa) {
-        Optional<Pessoa> pessoaBD = pessoaRepository.findPessoaByIdPessoa(idPessoa);
-        return pessoaBD;
+        return Optional.ofNullable(pessoaRepository.findPessoaByIdPessoa(idPessoa));
     }
 
     @Override
-    public Optional<Pessoa> buscarPessoaPorEmail(String email) {
-        Optional<Pessoa> pessoaBD = pessoaRepository.findPessoaByEmailPessoa(email);
-        return pessoaBD;
+    public Pessoa buscarPessoaPorEmail(String email) {
+        return pessoaRepository.findPessoaByEmailPessoa(email);
     }
 
     @Override
-    public Optional<Pessoa> excluirPessoa(long idPessoa) {
-        Optional<Pessoa> pessoaBD = pessoaRepository.findPessoaByIdPessoa(idPessoa);
+    public Pessoa excluirPessoa(long idPessoa) {
+        Pessoa pessoaBD = pessoaRepository.findPessoaByIdPessoa(idPessoa);
         pessoaRepository.deleteById(idPessoa);
         return pessoaBD;
     }
 
     @Override
-    public List<PessoaDTO> listarTodasPessoas() {
-        List<PessoaDTO> listaPessoas = pessoaMapper.toDTO(pessoaRepository.findAll());
-        return listaPessoas;
+    public List<PessoaListaDTO> listarTodasPessoas() {
+        return pessoaMapper.toListaPessoaDTO(pessoaRepository.findAll());
     }
 }

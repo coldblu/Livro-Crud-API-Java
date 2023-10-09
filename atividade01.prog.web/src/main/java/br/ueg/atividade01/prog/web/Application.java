@@ -1,8 +1,10 @@
 package br.ueg.atividade01.prog.web;
 
-import br.ueg.atividade01.prog.web.model.Emprestimo;
 import br.ueg.atividade01.prog.web.model.Livro;
+import br.ueg.atividade01.prog.web.model.Usuario;
 import br.ueg.atividade01.prog.web.repository.LivroRepository;
+import br.ueg.atividade01.prog.web.repository.UsuarioRepository;
+import br.ueg.atividade01.prog.web.service.UsuarioService;
 import br.ueg.atividade01.prog.web.service.impl.EmprestimoServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,16 +18,18 @@ import java.time.LocalDate;
 
 @SpringBootApplication(scanBasePackages = {
 		"br.ueg.atividade01.*", // modificar conforme o pacote padrão do seu projeto
-		"br.ueg.prog.webi.*" //Para funcionamento da Arquitetura
 })
-@EntityScan(basePackageClasses = { Jsr310JpaConverters.class }, basePackages ={"br.ueg.atividade01.prog.web.model","br.ueg.prog.webi.api.*"})
+@EntityScan(basePackageClasses = { Jsr310JpaConverters.class }, basePackages ={"br.ueg.atividade01.prog.web.model"})
 public class Application {
 	private final LivroRepository livroRepository;
 	private final EmprestimoServiceImpl emprestimoService;
 
-	public Application(LivroRepository livroRepository, EmprestimoServiceImpl emprestimoService) {
+	private final UsuarioService usuarioService;
+
+	public Application(LivroRepository livroRepository, EmprestimoServiceImpl emprestimoService, UsuarioService usuarioRepository) {
 		this.livroRepository = livroRepository;
 		this.emprestimoService = emprestimoService;
+		this.usuarioService = usuarioRepository;
 	}
 
 	public static void main(String[] args) {
@@ -129,8 +133,14 @@ public class Application {
 			emprestimo.setLivroID(1);
 			emprestimo.setNomePessoa("Hans Aus");
 
-			emprestimo = emprestimoService.incluirEmprestimo(emprestimo);
-			*/
+			emprestimo = emprestimoService.incluirEmprestimo(emprestimo);*/
+
+			Usuario usuario = new Usuario();
+			usuario.setEmailUsuario("admin");
+			usuario.setSenhaUsuario("admin");
+			usuario.setRole("admin");
+			usuarioService.inserirUsuario(usuario);
+
 		};
 	}
 

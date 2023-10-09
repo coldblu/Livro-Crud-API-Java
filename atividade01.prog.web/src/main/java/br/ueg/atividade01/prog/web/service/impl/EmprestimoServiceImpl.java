@@ -1,7 +1,11 @@
 package br.ueg.atividade01.prog.web.service.impl;
 
 import br.ueg.atividade01.prog.web.model.Emprestimo;
+import br.ueg.atividade01.prog.web.model.Livro;
+import br.ueg.atividade01.prog.web.model.Pessoa;
 import br.ueg.atividade01.prog.web.repository.EmprestimoRepository;
+import br.ueg.atividade01.prog.web.repository.LivroRepository;
+import br.ueg.atividade01.prog.web.repository.PessoaRepository;
 import br.ueg.atividade01.prog.web.service.EmprestimoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,6 +21,10 @@ import java.util.Optional;
 public class EmprestimoServiceImpl implements EmprestimoService {
     @Autowired
     private EmprestimoRepository emprestimoRepository;
+    @Autowired
+    private LivroRepository livroRepository;
+    @Autowired
+    private PessoaRepository pessoaRepository;
     @Override
     public Emprestimo incluirEmprestimo(Emprestimo emprestimo) {
         boolean estaAtivo = verificarEmprestimoAtivo(emprestimo.getIdEmprestimo());
@@ -33,6 +41,12 @@ public class EmprestimoServiceImpl implements EmprestimoService {
     public List<Emprestimo> listarEmprestimosAtivos() {
         LocalDate currentDate = LocalDate.now();
         return emprestimoRepository.findAllByDataDevolucaoIsNullOrDataDevolucaoAfter(currentDate);
+    }
+
+    @Override
+    public List<Emprestimo> listarEmprestimosAtivosDaPessoa(long id) {
+        Pessoa pessoa = pessoaRepository.findPessoaByIdPessoa(id);
+        return emprestimoRepository.findByPessoaAndDataDevolucaoIsNull(pessoa);
     }
 
     public List<Emprestimo> listarEmprestimosFinalizados() {
@@ -82,7 +96,8 @@ public class EmprestimoServiceImpl implements EmprestimoService {
 
     @Override
     public boolean verificarEmprestimoAtivo(long livroId) {
-        List<Emprestimo> emprestimosAtivos = emprestimoRepository.findByLivroIDAndDataDevolucaoIsNull(livroId);
+        Livro livro = livroRepository.findLivroByidLivro(livroId);
+        List<Emprestimo> emprestimosAtivos = emprestimoRepository.findByLivroAndDataDevolucaoIsNull(livro);
         return !emprestimosAtivos.isEmpty();
     }
 

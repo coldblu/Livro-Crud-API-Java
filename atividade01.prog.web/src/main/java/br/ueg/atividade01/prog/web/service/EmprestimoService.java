@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface EmprestimoService {
     public Emprestimo incluirEmprestimo(Emprestimo emprestimo);
     public List<Emprestimo> listarEmprestimosAtivos();
+    public List<Emprestimo> listarEmprestimosAtivosDaPessoa(long id);
     public Emprestimo finalizarEmprestimo(long id);
     public Optional<Emprestimo> excluirEmprestimo(long id);
     public Optional<Emprestimo> buscarEmprestimo(long id);

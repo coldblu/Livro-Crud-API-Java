@@ -19,6 +19,7 @@ public class EmprestimoMapperImpl implements EmprestimoMapper{
     private LivroService livroService;
     @Autowired
     private PessoaService pessoaService;
+
     @Override
     public EmprestimoDTO toEmprestimoDTO(Emprestimo emprestimo) {
         EmprestimoDTO emprestimoDTO = new EmprestimoDTO();
@@ -35,7 +36,7 @@ public class EmprestimoMapperImpl implements EmprestimoMapper{
     public Emprestimo toEmprestimoModel(EmprestimoDTO emprestimoDTO) {
         Emprestimo emprestimo = new Emprestimo();
         emprestimo.setIdEmprestimo(emprestimoDTO.getIdEmprestimo());
-        emprestimo.setLivro(livroService.buscarLivro(emprestimoDTO.getLivroID()).orElseThrow(() -> new NoSuchElementException("Livro não encontrado")));
+        emprestimo.setLivro(livroService.buscarLivroPeloId(emprestimoDTO.getLivroID()).orElseThrow(() -> new NoSuchElementException("Livro não encontrado")));
         emprestimo.setPessoa(pessoaService.buscarPessoaPeloId(emprestimoDTO.getPessoaID()).orElseThrow(() -> new NoSuchElementException("Pessoa não encontrada")));
         emprestimo.setDataEmprestimo(emprestimoDTO.getDataEmprestimo());
         emprestimo.setDataDevolucao(emprestimoDTO.getDataDevolucao());

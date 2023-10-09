@@ -1,22 +1,32 @@
 package br.ueg.atividade01.prog.web.model;
 
-import br.ueg.prog.webi.api.model.BaseEntidade;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Entity
+@Entity(name = "usuario")
 @Getter
-@Table(name = "usuario")
-public class Usuario extends BaseEntidade<Long> {
-    public static final class Coluna {
-        public static final String ID = "userid";
-    }
+@NoArgsConstructor
+@AllArgsConstructor
+//@EqualsAndHashCode(of = "idUsuario")
+@Table(name = "usuario",
+        uniqueConstraints = {
+                @UniqueConstraint(name= Usuario.UK_USUARIO, columnNames = "id_usuario" )
+        }
+)
+public class Usuario implements UserDetails {
+    public static final String UK_USUARIO = "uk_usuario";
     @SequenceGenerator(
             name="a_gerador_sequence",
             sequenceName = "amigo_sequence",
@@ -27,34 +37,51 @@ public class Usuario extends BaseEntidade<Long> {
             generator = "a_gerador_sequence"
     )
     @Id
-    @Column(name = Coluna.ID)
-    private Long idUsuario;
+    @Column(name = "id_usuario")
+    private long idUsuario;
 
     @Column(name = "email_usuario", unique = true, nullable = false)
     private String emailUsuario;
 
-    @Column(name = "usuario_senha")
+    @Column(name = "usuario_senha", nullable = false)
     private String senhaUsuario;
 
-    @Column(name = "status", nullable = false)
-    private boolean status;
-
-    @Column(name = "role", length = 200, nullable = true)
+    @Column(name = "role", nullable = false)
     private String role;
 
     @Override
-    public String getTabelaNome() {
-        return "usuario";
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if("admin".equals(this.role)) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
-    public Long getId() {
-        return idUsuario;
+    public String getPassword() {
+        return this.senhaUsuario;
     }
 
     @Override
-    public void setId(Long id) {
-        this.idUsuario = id;
+    public String getUsername() {
+        return this.emailUsuario;
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

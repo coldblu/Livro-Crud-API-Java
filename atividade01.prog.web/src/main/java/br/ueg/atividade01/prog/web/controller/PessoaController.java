@@ -13,12 +13,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-
 @RestController
 @RequestMapping(path = "${app.api.base}/pessoa")
+//@PreAuthorize(value = "isAuthenticated()")
 public class PessoaController {
     @Autowired
     private PessoaMapper pessoaMapper;
@@ -32,14 +33,14 @@ public class PessoaController {
                     schema = @Schema(implementation = PessoaDTO.class)))
     public ResponseEntity<PessoaDTO> incluirPessoa(@RequestBody PessoaDTO pessoaDTO){
         //prepração para entrada.
-        Pessoa novaPessoa = this.pessoaMapper.toModelo(pessoaDTO);
+        Pessoa novaPessoa = this.pessoaMapper.toPessoaModel(pessoaDTO);
 
         //chamada do serviço
         System.out.println(novaPessoa);
         novaPessoa = this.pessoaService.incluirPessoa(novaPessoa);
 
         //preparação para o retorno
-        PessoaDTO pessoaDto = this.pessoaMapper.toDTO(novaPessoa);
+        PessoaDTO pessoaDto = this.pessoaMapper.toPessoaDTO(novaPessoa);
         return ResponseEntity.ok(pessoaDto);
     }
 
@@ -50,10 +51,10 @@ public class PessoaController {
                     schema = @Schema(implementation = PessoaDTO.class)))
     @ApiResponse(responseCode = "404", description = "Pessoa não encontrada")
     public ResponseEntity<PessoaDTO> buscarPessoa(@PathVariable(name = "id") long id) {
-        Optional<Pessoa> pessoaOptional = pessoaService.buscarPessoaPeloId(id);
-        if (pessoaOptional.isPresent()) {
-            Pessoa pessoa = pessoaOptional.get();
-            PessoaDTO pessoaDTO = pessoaMapper.toDTO(pessoa);
+        Optional<Pessoa> pessoa = pessoaService.buscarPessoaPeloId(id);
+        if (pessoa.isPresent()) {
+            Pessoa pessoaBD = pessoa.get();
+            PessoaDTO pessoaDTO = pessoaMapper.toPessoaDTO(pessoaBD);
             return ResponseEntity.ok(pessoaDTO);
         } else {
             throw new IllegalArgumentException("Pessoa não encontrada");

@@ -23,17 +23,17 @@ public class WebConfig extends ApiWebConfig {
 
 	/**
 	 * Retorna a instância {@link MethodValidationPostProcessor}.
-	 * 
+	 *
 	 * @return
 	 */
 	/*@Bean
 	public MethodValidationPostProcessor methodValidationPostProcessor() {
 		return new MethodValidationPostProcessor();
-	}*/
+	}
 
 	@Override
 	public CorsFilter corsFilter() {
 		CorsFilter corsFilter = super.corsFilter();
 		return corsFilter;
-	}
+	}*/
 }

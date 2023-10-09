@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,23 +56,29 @@ public class LivroServiceImpl implements LivroService {
     }
 
     @Override
-    public Optional<Livro> excluir(long id) {
-        Optional<Livro> livroBD = livroRepository.findLivroByidLivro(id);
+    public Livro excluir(long id) {
+        Livro livroBD = livroRepository.findLivroByidLivro(id);
         livroRepository.deleteById(id);
         return livroBD;
     }
 
     @Override
-    public Optional<Livro> buscarLivro(long id) {
-        Optional<Livro> livroBD = livroRepository.findLivroByidLivro(id);
+    public Livro buscarLivro(long id) {
+        Livro livroBD = livroRepository.findLivroByidLivro(id);
         return livroBD;
+    }
+
+    @Override
+    public Optional<Livro> buscarLivroPeloId(long id) {
+        Livro livroBD = livroRepository.findLivroByidLivro(id);
+        return Optional.of(livroBD);
     }
 
     @Override
     public List<LivroListaDTO> listarTodosLivros() {
         List<LivroListaDTO> lista = livroMapper.toDTO(livroRepository.findAll());
         lista.forEach(livroListaDTO -> {
-            List<Emprestimo> listaEmprestimo = emprestimoRepository.findByLivroIDAndDataDevolucaoIsNull(livroListaDTO.getIdLivro());
+            List<Emprestimo> listaEmprestimo = emprestimoRepository.findByLivroAndDataDevolucaoIsNull(livroRepository.findLivroByidLivro(livroListaDTO.getIdLivro()));
             livroListaDTO.setEmprestado(!listaEmprestimo.isEmpty());
 
         });
