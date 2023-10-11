@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 @RestController
 @RequestMapping(path = "${app.api.base}/pessoa")
-//@PreAuthorize(value = "isAuthenticated()")
+@PreAuthorize(value = "isAuthenticated()")
 public class PessoaController {
     @Autowired
     private PessoaMapper pessoaMapper;

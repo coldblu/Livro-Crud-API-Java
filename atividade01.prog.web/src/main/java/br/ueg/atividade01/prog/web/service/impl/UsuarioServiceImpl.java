@@ -1,5 +1,6 @@
 package br.ueg.atividade01.prog.web.service.impl;
 
+import br.ueg.atividade01.prog.web.dto.AuthDTO;
 import br.ueg.atividade01.prog.web.dto.CadastroDTO;
 import br.ueg.atividade01.prog.web.dto.CredencialDTO;
 import br.ueg.atividade01.prog.web.mapper.UsuarioMapper;
@@ -69,6 +70,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Optional<Usuario> buscarUsuario(long idUsuario) {
         Optional<Usuario> usuarioBD = usuarioRepository.findUsuarioByIdUsuario(idUsuario);
         return usuarioBD;
+    }
+
+    @Override
+    public Boolean validarSenhaUsuario(AuthDTO dados) {
+        Usuario usuario = usuarioRepository.findUsuarioByEmailUsuario(dados.getLogin());
+        return passwordEncoder.matches(dados.getSenha(), usuario.getSenhaUsuario());
     }
 
     @Override

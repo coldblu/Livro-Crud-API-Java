@@ -16,6 +16,8 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 
+import java.util.Arrays;
+
 /**
  * Classe de configuração referente a geração de documentação automatida da API
  * REST.
@@ -61,7 +63,7 @@ public class ApiSwaggerConfig {
 								.name(SWAGGER_LICENSE)
 								.url(SWAGGER_LICENSE_URL)
 						)
-				);
+				).security(Arrays.asList(new io.swagger.v3.oas.models.security.SecurityRequirement().addList(BEARER_AUTH)));
 	}
 
 }

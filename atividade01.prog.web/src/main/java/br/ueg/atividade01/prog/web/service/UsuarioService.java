@@ -1,5 +1,6 @@
 package br.ueg.atividade01.prog.web.service;
 
+import br.ueg.atividade01.prog.web.dto.AuthDTO;
 import br.ueg.atividade01.prog.web.dto.CadastroDTO;
 import br.ueg.atividade01.prog.web.dto.CredencialDTO;
 import br.ueg.atividade01.prog.web.model.Usuario;
@@ -13,6 +14,6 @@ public interface UsuarioService {
     Usuario cadastroUsuario(CadastroDTO cadastroDTO);
     Optional<Usuario> excluirUsuario(long idUsuario);
     Optional<Usuario> buscarUsuario(long idUsuario);
-
+    Boolean validarSenhaUsuario(AuthDTO dados);
     CredencialDTO toCredencialDTO(Authentication auth, String token);
 }

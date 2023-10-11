@@ -4,12 +4,17 @@ import br.ueg.atividade01.prog.web.model.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,7 +28,7 @@ public class TokenServiceImpl {
         try{
             Algorithm algorithm = Algorithm.HMAC256(segredo);
             String token = JWT.create()
-                    .withIssuer("livro-api")
+                    .withIssuer("LivroApi")
                     .withSubject(usuario.getUsername())
                     .withExpiresAt(this.expirarEm())
                     .sign(algorithm);
@@ -37,7 +42,7 @@ public class TokenServiceImpl {
         try {
             Algorithm algorithm = Algorithm.HMAC256(segredo);
             String refreshToken = JWT.create()
-                    .withIssuer("livro-api")
+                    .withIssuer("LivroApi")
                     .withSubject(usuario.getUsername())
                     .withExpiresAt(this.expirarEm()) // Use o mesmo tempo de expiração do token de acesso
                     .sign(algorithm);
@@ -65,7 +70,7 @@ public class TokenServiceImpl {
         try {
             Algorithm algorithm = Algorithm.HMAC256(segredo);
             return JWT.require(algorithm)
-                    .withIssuer("livro-api")
+                    .withIssuer("LivroApi")
                     .build()
                     .verify(token)
                     .getSubject();
@@ -73,9 +78,14 @@ public class TokenServiceImpl {
             return "";
         }
     }
-    //Gera tempo de expiração para token
+
+    /*Gera tempo de expiração para token
     private Instant expirarEm() {
         return LocalDateTime.now().plusHours(3).toInstant(ZoneOffset.ofHours(-3));
+    }*/
+    private Instant expirarEm() {
+        Duration duration = Duration.ofHours(3);
+        return Instant.now().plus(duration);
     }
 
     public Long getAccessTokenExpirationMillis() {

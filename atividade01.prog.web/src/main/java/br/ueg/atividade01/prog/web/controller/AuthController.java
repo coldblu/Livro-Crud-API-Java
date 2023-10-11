@@ -17,10 +17,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,6 +36,8 @@ public class AuthController {
     private UsuarioService usuarioService;
     @Autowired
     private TokenServiceImpl tokenService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Operation(description = "Logar no sistema",responses = {
@@ -49,20 +53,28 @@ public class AuthController {
     })
     @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CredencialDTO> login(@RequestBody @Valid AuthDTO dados) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(dados.getLogin(), dados.getSenha());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.gerarToken((Usuario) auth.getPrincipal());
-        // Obtenha o tempo de expiração do token e do token de refresh do serviço TokenServiceImpl
-        Long accessTokenExpiresIn = tokenService.getAccessTokenExpirationMillis();
-        Long refreshTokenExpiresIn = tokenService.getRefreshTokenExpirationMillis();
+        if(usuarioService.validarSenhaUsuario(dados)){
+            var usernamePassword = new UsernamePasswordAuthenticationToken(dados.getLogin(), dados.getSenha());
+            var auth = this.authenticationManager.authenticate(usernamePassword);
+            String token = tokenService.gerarToken((Usuario) auth.getPrincipal());
+            // Verifique se o token é vazio (inválido)
+            if (token.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            // Obtenha o tempo de expiração do token e do token de refresh do serviço TokenServiceImpl
+            Long accessTokenExpiresIn = tokenService.getAccessTokenExpirationMillis();
+            Long refreshTokenExpiresIn = tokenService.getRefreshTokenExpirationMillis();
 
+            //CredencialDTO com as informações necessárias
+            CredencialDTO credencialDTO = usuarioService.toCredencialDTO(auth,token);
+            credencialDTO.setAccessTokenExpiresIn(accessTokenExpiresIn);
+            credencialDTO.setRefreshTokenExpiresIn(refreshTokenExpiresIn);
 
-        // Crie um objeto CredencialDTO com as informações necessárias
-        CredencialDTO credencialDTO = usuarioService.toCredencialDTO(auth,token);
-        credencialDTO.setAccessTokenExpiresIn(accessTokenExpiresIn);
-        credencialDTO.setRefreshTokenExpiresIn(refreshTokenExpiresIn);
+            return ResponseEntity.ok(credencialDTO);
+        } else {
+            return ResponseEntity.badRequest().build();
+       }
 
-        return ResponseEntity.ok(credencialDTO);
     }
     /*public ResponseEntity login(@RequestBody @Valid AuthDTO dados){
         var usernamePassword = new UsernamePasswordAuthenticationToken(dados.getLogin(), dados.getSenha());

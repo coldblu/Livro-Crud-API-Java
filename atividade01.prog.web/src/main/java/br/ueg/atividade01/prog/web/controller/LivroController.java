@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "${app.api.base}/livro")
-//@PreAuthorize(value = "isAuthenticated()")
+@PreAuthorize(value = "isAuthenticated()")
 public class LivroController {
 
     @Autowired
