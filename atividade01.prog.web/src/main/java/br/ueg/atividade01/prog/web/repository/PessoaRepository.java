@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
     Pessoa findPessoaByIdPessoa(long id);
     Pessoa findPessoaByEmailPessoa(String email);
+    Boolean isPessoaCadastrada(String email);
 
 }

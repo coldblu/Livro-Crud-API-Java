@@ -15,5 +15,5 @@ public interface UsuarioService {
     Optional<Usuario> excluirUsuario(long idUsuario);
     Optional<Usuario> buscarUsuario(long idUsuario);
     Boolean validarSenhaUsuario(AuthDTO dados);
-    CredencialDTO toCredencialDTO(Authentication auth, String token);
+
 }

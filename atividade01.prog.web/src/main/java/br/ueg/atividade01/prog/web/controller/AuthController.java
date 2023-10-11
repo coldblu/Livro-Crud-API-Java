@@ -3,10 +3,11 @@ package br.ueg.atividade01.prog.web.controller;
 import br.ueg.atividade01.prog.web.dto.AuthDTO;
 import br.ueg.atividade01.prog.web.dto.CadastroDTO;
 import br.ueg.atividade01.prog.web.dto.CredencialDTO;
-import br.ueg.atividade01.prog.web.dto.LoginResponseDTO;
+import br.ueg.atividade01.prog.web.mapper.UsuarioMapper;
 import br.ueg.atividade01.prog.web.model.Usuario;
 import br.ueg.atividade01.prog.web.repository.UsuarioRepository;
 import br.ueg.atividade01.prog.web.service.UsuarioService;
+import br.ueg.atividade01.prog.web.service.impl.AuthServiceImpl;
 import br.ueg.atividade01.prog.web.service.impl.TokenServiceImpl;
 import br.ueg.prog.webi.api.exception.MessageResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,14 +23,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import javax.management.remote.JMXAuthenticator;
 
 @RestController
 @RequestMapping("${app.api.base}/auth")
 public class AuthController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
+
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
@@ -37,7 +39,9 @@ public class AuthController {
     @Autowired
     private TokenServiceImpl tokenService;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthServiceImpl authService;
 
 
     @Operation(description = "Logar no sistema",responses = {
@@ -56,19 +60,19 @@ public class AuthController {
         if(usuarioService.validarSenhaUsuario(dados)){
             var usernamePassword = new UsernamePasswordAuthenticationToken(dados.getLogin(), dados.getSenha());
             var auth = this.authenticationManager.authenticate(usernamePassword);
-            String token = tokenService.gerarToken((Usuario) auth.getPrincipal());
+            var token = tokenService.gerarToken((Usuario)auth.getPrincipal());
             // Verifique se o token é vazio (inválido)
             if (token.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                return null;
             }
             // Obtenha o tempo de expiração do token e do token de refresh do serviço TokenServiceImpl
             Long accessTokenExpiresIn = tokenService.getAccessTokenExpirationMillis();
             Long refreshTokenExpiresIn = tokenService.getRefreshTokenExpirationMillis();
 
             //CredencialDTO com as informações necessárias
-            CredencialDTO credencialDTO = usuarioService.toCredencialDTO(auth,token);
-            credencialDTO.setAccessTokenExpiresIn(accessTokenExpiresIn);
-            credencialDTO.setRefreshTokenExpiresIn(refreshTokenExpiresIn);
+
+            Usuario usuario = (Usuario) auth.getPrincipal();
+            CredencialDTO credencialDTO = authService.credenciaisDoUsuario(usuario,token,accessTokenExpiresIn,refreshTokenExpiresIn);
 
             return ResponseEntity.ok(credencialDTO);
         } else {
@@ -76,14 +80,7 @@ public class AuthController {
        }
 
     }
-    /*public ResponseEntity login(@RequestBody @Valid AuthDTO dados){
-        var usernamePassword = new UsernamePasswordAuthenticationToken(dados.getLogin(), dados.getSenha());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.gerarToken((Usuario)auth.getPrincipal());
-        return ResponseEntity.ok(new LoginResponseDTO(token));
 
-
-    }*/
 
     @Operation(description = "Logout do sistema")
     @PostMapping(path = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -115,12 +112,12 @@ public class AuthController {
                                     array = @ArraySchema(schema = @Schema(implementation = MessageResponse.class))))
             })
     @PostMapping(path = "/cadastro", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity cadastro(@RequestBody @Valid CadastroDTO dados) {
-        if (usuarioRepository.findByEmailUsuario(dados.getLogin()) != null)
+    public ResponseEntity<Usuario> cadastro(@RequestBody @Valid CadastroDTO dados) {
+        if (usuarioRepository.findByEmailUsuario(dados.getEmailPessoa()) != null)
             return ResponseEntity.badRequest().build();
         else {
-            usuarioService.cadastroUsuario(dados);
-            return ResponseEntity.ok().build();
+            Usuario usuario = authService.cadastrarPessoaUsuario(dados);
+            return ResponseEntity.ok(usuario);
         }
     }
 }

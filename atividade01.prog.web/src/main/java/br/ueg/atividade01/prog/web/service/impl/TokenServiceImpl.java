@@ -7,6 +7,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -19,6 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
+@Component
 public class TokenServiceImpl {
     @Value("${api.security.token.secret}")
     private String segredo;
@@ -27,12 +29,11 @@ public class TokenServiceImpl {
     public String gerarToken(Usuario usuario){
         try{
             Algorithm algorithm = Algorithm.HMAC256(segredo);
-            String token = JWT.create()
-                    .withIssuer("LivroApi")
-                    .withSubject(usuario.getUsername())
-                    .withExpiresAt(this.expirarEm())
-                    .sign(algorithm);
-                    return token;
+            return JWT.create()
+                            .withIssuer("LivroApi")
+                            .withSubject(usuario.getUsername())
+                            .withExpiresAt(this.expirarEm())
+                            .sign(algorithm);
         } catch (JWTCreationException exception) {
             throw new RuntimeException("Erro ao gerar token.",exception);
         }
@@ -41,12 +42,11 @@ public class TokenServiceImpl {
     public String gerarRefreshToken(Usuario usuario) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(segredo);
-            String refreshToken = JWT.create()
+            return JWT.create()
                     .withIssuer("LivroApi")
                     .withSubject(usuario.getUsername())
                     .withExpiresAt(this.expirarEm()) // Use o mesmo tempo de expiração do token de acesso
                     .sign(algorithm);
-            return refreshToken;
         } catch (JWTCreationException exception) {
             throw new RuntimeException("Erro ao gerar refresh token.", exception);
         }

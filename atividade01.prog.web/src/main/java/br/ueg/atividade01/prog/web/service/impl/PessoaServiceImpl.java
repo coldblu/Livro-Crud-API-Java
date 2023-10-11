@@ -1,5 +1,6 @@
 package br.ueg.atividade01.prog.web.service.impl;
 
+import br.ueg.atividade01.prog.web.dto.CadastroDTO;
 import br.ueg.atividade01.prog.web.dto.PessoaListaDTO;
 import br.ueg.atividade01.prog.web.mapper.PessoaMapper;
 import br.ueg.atividade01.prog.web.model.Pessoa;
@@ -24,6 +25,19 @@ public class PessoaServiceImpl implements PessoaService {
     @Override
     public Pessoa incluirPessoa(Pessoa pessoa) {
         return pessoaRepository.save(pessoa);
+    }
+    @Override
+    public Pessoa cadastroPessoa(CadastroDTO cadastroDTO){
+        if(!pessoaRepository.isPessoaCadastrada(cadastroDTO.getEmailPessoa())){
+            Pessoa novaPessoa = new Pessoa();
+            novaPessoa.setEmailPessoa(cadastroDTO.getEmailPessoa());
+            novaPessoa.setNomePessoa(cadastroDTO.getNomePessoa());
+            return  this.incluirPessoa(novaPessoa);
+        }
+        else{
+            return null;
+        }
+
     }
 
     @Override

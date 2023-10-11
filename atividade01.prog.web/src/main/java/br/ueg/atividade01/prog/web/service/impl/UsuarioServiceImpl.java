@@ -4,7 +4,9 @@ import br.ueg.atividade01.prog.web.dto.AuthDTO;
 import br.ueg.atividade01.prog.web.dto.CadastroDTO;
 import br.ueg.atividade01.prog.web.dto.CredencialDTO;
 import br.ueg.atividade01.prog.web.mapper.UsuarioMapper;
+import br.ueg.atividade01.prog.web.model.Pessoa;
 import br.ueg.atividade01.prog.web.model.Usuario;
+import br.ueg.atividade01.prog.web.repository.PessoaRepository;
 import br.ueg.atividade01.prog.web.repository.UsuarioRepository;
 import br.ueg.atividade01.prog.web.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     private UsuarioMapper usuarioMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PessoaRepository pessoaRepository;
+
     @Override
     public Usuario inserirUsuario(Usuario usuario) {
         String senhaPlaintext = usuario.getSenhaUsuario(); // Obtém a senha não criptografada
@@ -53,8 +58,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario cadastroUsuario(CadastroDTO cadastroDTO) {
         Usuario novoUsuario = new Usuario();
-        novoUsuario.setEmailUsuario(cadastroDTO.getLogin());
+        novoUsuario.setEmailUsuario(cadastroDTO.getEmailPessoa());
         novoUsuario.setSenhaUsuario(cadastroDTO.getSenha());
+        novoUsuario.setPessoa(pessoaRepository.findPessoaByEmailPessoa(cadastroDTO.getEmailPessoa()));
         novoUsuario.setRole("comum");
         return this.inserirUsuario(novoUsuario);
     }
@@ -78,7 +84,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         return passwordEncoder.matches(dados.getSenha(), usuario.getSenhaUsuario());
     }
 
-    @Override
+    /*@Override
     public CredencialDTO toCredencialDTO(Authentication auth, String token) {
         if (auth == null || !auth.isAuthenticated()) {
             throw new IllegalArgumentException("Authentication não é válida ou autenticada.");
@@ -91,5 +97,5 @@ public class UsuarioServiceImpl implements UsuarioService {
         credencialDTO.setRoles(usuario.getAuthorities());
         credencialDTO.setAccessToken(token);
         return credencialDTO;
-    }
+    }*/
 }

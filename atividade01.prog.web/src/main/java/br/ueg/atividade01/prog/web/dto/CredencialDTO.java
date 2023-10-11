@@ -50,25 +50,7 @@ public @Data class CredencialDTO implements Serializable {
     @Schema(description = "Tempo de expiração do token de refresh")
     private Long refreshTokenExpiresIn;
 
-    public CredencialDTO() {
 
-    }
-
-
-
-    // Construtor público
-    public CredencialDTO(Long id, String email, List<String> roles, String accessToken, Long refreshExpiresIn,
-                         String senha, Long accessTokenExpiresIn, String refreshToken, Long refreshTokenExpiresIn) {
-        this.id = id;
-        this.email = email;
-        this.roles = roles;
-        this.accessToken = accessToken;
-        this.refreshExpiresIn = refreshExpiresIn;
-        this.senha = senha;
-        this.accessTokenExpiresIn = accessTokenExpiresIn;
-        this.refreshToken = refreshToken;
-        this.refreshTokenExpiresIn = refreshTokenExpiresIn;
-    }
 
 
     public void setRoles(Collection<? extends GrantedAuthority> authorities) {
