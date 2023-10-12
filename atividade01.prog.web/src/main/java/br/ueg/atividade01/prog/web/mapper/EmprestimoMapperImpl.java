@@ -22,14 +22,20 @@ public class EmprestimoMapperImpl implements EmprestimoMapper{
 
     @Override
     public EmprestimoDTO toEmprestimoDTO(Emprestimo emprestimo) {
-        EmprestimoDTO emprestimoDTO = new EmprestimoDTO();
-        emprestimoDTO.setIdEmprestimo(emprestimo.getIdEmprestimo());
-        emprestimoDTO.setLivroID(emprestimo.getLivro().getIdLivro());
-        emprestimoDTO.setPessoaID(emprestimo.getPessoa().getIdPessoa());
-        emprestimoDTO.setDataEmprestimo(emprestimo.getDataEmprestimo());
-        emprestimoDTO.setDataDevolucao(emprestimo.getDataDevolucao());
+        if(emprestimo.getPessoa() != null && emprestimo.getLivro() != null ) {
+            EmprestimoDTO emprestimoDTO = new EmprestimoDTO();
+            emprestimoDTO.setIdEmprestimo(emprestimo.getIdEmprestimo());
+            emprestimoDTO.setLivroID(emprestimo.getLivro().getIdLivro());
+            emprestimoDTO.setPessoaID(emprestimo.getPessoa().getIdPessoa());
+            emprestimoDTO.setLivroNome(emprestimo.getLivro().getTitulo());
+            emprestimoDTO.setPessoaNome(emprestimo.getPessoa().getNomePessoa());
+            emprestimoDTO.setPessoaEmail(emprestimo.getPessoa().getEmailPessoa());
+            emprestimoDTO.setDataEmprestimo(emprestimo.getDataEmprestimo());
+            emprestimoDTO.setDataDevolucao(emprestimo.getDataDevolucao());
 
-        return emprestimoDTO;
+            return emprestimoDTO;
+        }
+        else return  null;
     }
 
     @Override
@@ -52,6 +58,9 @@ public class EmprestimoMapperImpl implements EmprestimoMapper{
                 emprestimoListaDTO.setIdEmprestimo(emprestimo.getIdEmprestimo());
                 emprestimoListaDTO.setLivroID(emprestimo.getLivro().getIdLivro());
                 emprestimoListaDTO.setPessoaID(emprestimo.getPessoa().getIdPessoa());
+                emprestimoListaDTO.setLivroNome(emprestimo.getLivro().getTitulo());
+                emprestimoListaDTO.setPessoaNome(emprestimo.getPessoa().getNomePessoa());
+                emprestimoListaDTO.setPessoaEmail(emprestimo.getPessoa().getEmailPessoa());
                 emprestimoListaDTO.setDataEmprestimo(emprestimo.getDataEmprestimo());
                 emprestimoListaDTO.setDataDevolucao(emprestimo.getDataDevolucao());
                 emprestimosDTO.add(emprestimoListaDTO);

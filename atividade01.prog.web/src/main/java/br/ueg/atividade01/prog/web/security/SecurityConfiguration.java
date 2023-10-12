@@ -75,7 +75,7 @@ public class SecurityConfiguration {
                 .requestMatchers(
                         freeAccessPatterns
                 ).permitAll()
-                .anyRequest().anonymous()
+                .anyRequest().anonymous()//End points abertos para testar o front
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

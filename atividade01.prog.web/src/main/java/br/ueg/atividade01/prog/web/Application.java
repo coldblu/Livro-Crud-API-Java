@@ -1,10 +1,15 @@
 package br.ueg.atividade01.prog.web;
 
+import br.ueg.atividade01.prog.web.dto.CadastroDTO;
+import br.ueg.atividade01.prog.web.model.Emprestimo;
 import br.ueg.atividade01.prog.web.model.Livro;
+import br.ueg.atividade01.prog.web.model.Pessoa;
 import br.ueg.atividade01.prog.web.model.Usuario;
 import br.ueg.atividade01.prog.web.repository.LivroRepository;
+import br.ueg.atividade01.prog.web.repository.PessoaRepository;
 import br.ueg.atividade01.prog.web.repository.UsuarioRepository;
 import br.ueg.atividade01.prog.web.service.UsuarioService;
+import br.ueg.atividade01.prog.web.service.impl.AuthServiceImpl;
 import br.ueg.atividade01.prog.web.service.impl.EmprestimoServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,11 +30,18 @@ public class Application {
 	private final EmprestimoServiceImpl emprestimoService;
 
 	private final UsuarioService usuarioService;
+	private final AuthServiceImpl authService;
+	private final UsuarioRepository usuarioRepository;
+	private final PessoaRepository pessoaRepository;
 
-	public Application(LivroRepository livroRepository, EmprestimoServiceImpl emprestimoService, UsuarioService usuarioRepository) {
+
+	public Application(LivroRepository livroRepository, EmprestimoServiceImpl emprestimoService, UsuarioService usuarioService, AuthServiceImpl authService, UsuarioRepository usuarioRepository, PessoaRepository pessoaRepository) {
 		this.livroRepository = livroRepository;
 		this.emprestimoService = emprestimoService;
-		this.usuarioService = usuarioRepository;
+		this.usuarioService = usuarioService;
+		this.authService = authService;
+		this.usuarioRepository = usuarioRepository;
+		this.pessoaRepository = pessoaRepository;
 	}
 
 	public static void main(String[] args) {
@@ -87,59 +99,111 @@ public class Application {
 				e.printStackTrace();
 			}
 
+			//Usuarios /************************************************************/
+			CadastroDTO cadastroDTO = new CadastroDTO();
+			cadastroDTO.setEmailPessoa("admin");
+			cadastroDTO.setNomePessoa("admin");
+			cadastroDTO.setSenha("admin");
+			authService.cadastrarPessoaUsuario(cadastroDTO);
+			Usuario usuario = usuarioRepository.findUsuarioByEmailUsuario("admin");
+			usuario.setRole("admin");
+			usuarioRepository.save(usuario);
+
+
+			// --------- Usuarios comuns -------------------------------------------/
+
+            cadastroDTO = new CadastroDTO();
+			cadastroDTO.setEmailPessoa("João Pessoa");
+			cadastroDTO.setNomePessoa("joao.pessoa@gmail.com");
+			cadastroDTO.setSenha("123456");
+			authService.cadastrarPessoaUsuario(cadastroDTO);
+
+            cadastroDTO = new CadastroDTO();
+			cadastroDTO.setEmailPessoa("Maria Rosa");
+			cadastroDTO.setNomePessoa("rosa.maria@gmail.com");
+			cadastroDTO.setSenha("123456");
+			authService.cadastrarPessoaUsuario(cadastroDTO);
+
+            cadastroDTO = new CadastroDTO();
+			cadastroDTO.setEmailPessoa("Carlos Magnus");
+			cadastroDTO.setNomePessoa("magnus@carlos.br");
+			cadastroDTO.setSenha("123456");
+			authService.cadastrarPessoaUsuario(cadastroDTO);
+
+			cadastroDTO = new CadastroDTO();
+			cadastroDTO.setEmailPessoa("Elena Jett");
+			cadastroDTO.setNomePessoa("jett.elena@hotmail.com");
+			cadastroDTO.setSenha("123456");
+			authService.cadastrarPessoaUsuario(cadastroDTO);
+
+			cadastroDTO = new CadastroDTO();
+			cadastroDTO.setEmailPessoa("Miranda Nanda");
+			cadastroDTO.setNomePessoa("mira.nanda@yahoo.com");
+			cadastroDTO.setSenha("123456");
+			authService.cadastrarPessoaUsuario(cadastroDTO);
+
+			cadastroDTO = new CadastroDTO();
+			cadastroDTO.setEmailPessoa("Hans Aus");
+			cadastroDTO.setNomePessoa("hans@gmail.com");
+			cadastroDTO.setSenha("123456");
+			authService.cadastrarPessoaUsuario(cadastroDTO);
+
+			//************************************************************//
+
 			/*
 			//Emprestimo
 			Emprestimo emprestimo = new Emprestimo();
 			//Prmeiro
-			emprestimo.setLivroID(1);
-			emprestimo.setNomePessoa("João Pessoa");
-
+			emprestimo.setLivro(livroRepository.findLivroByidLivro(1));
+			Pessoa pessoa = new Pessoa();
+			pessoa = pessoaRepository.findPessoaByEmailPessoa("joao.pessoa@gmail.com");
+			emprestimo.setPessoa(pessoa);
 			emprestimo = emprestimoService.incluirEmprestimo(emprestimo);
 			emprestimo = emprestimoService.finalizarEmprestimo(emprestimo.getIdEmprestimo());
 
 			//Segundo
 			emprestimo = new Emprestimo();
-			emprestimo.setLivroID(1);
-			emprestimo.setNomePessoa("Maria Rosa");
-
+			emprestimo.setLivro(livroRepository.findLivroByidLivro(1));
+            pessoa = new Pessoa();
+			pessoa = pessoaRepository.findPessoaByEmailPessoa("rosa.maria@gmail.com");
+			emprestimo.setPessoa(pessoa);
 			emprestimo = emprestimoService.incluirEmprestimo(emprestimo);
 			emprestimo = emprestimoService.finalizarEmprestimo(emprestimo.getIdEmprestimo());
 
 			//Terceiro
 			emprestimo = new Emprestimo();
-			emprestimo.setLivroID(2);
-			emprestimo.setNomePessoa("Carlos Magnus");
-
+			emprestimo.setLivro(livroRepository.findLivroByidLivro(2));
+			pessoa = new Pessoa();
+			pessoa = pessoaRepository.findPessoaByEmailPessoa("magnus@carlos.br");
+			emprestimo.setPessoa(pessoa);
 			emprestimo = emprestimoService.incluirEmprestimo(emprestimo);
 			emprestimo = emprestimoService.finalizarEmprestimo(emprestimo.getIdEmprestimo());
 
 			//Quarto
 			emprestimo = new Emprestimo();
-			emprestimo.setLivroID(3);
-			emprestimo.setNomePessoa("Miranda Nanda");
-
+			emprestimo.setLivro(livroRepository.findLivroByidLivro(3));
+			pessoa = new Pessoa();
+			pessoa = pessoaRepository.findPessoaByEmailPessoa("mira.nanda@yahoo.com");
+			emprestimo.setPessoa(pessoa);
 			emprestimo = emprestimoService.incluirEmprestimo(emprestimo);
 			emprestimo = emprestimoService.finalizarEmprestimo(emprestimo.getIdEmprestimo());
 
 			//Quinto
 			emprestimo = new Emprestimo();
-			emprestimo.setLivroID(2);
-			emprestimo.setNomePessoa("Elena Jett");
-
+			emprestimo.setLivro(livroRepository.findLivroByidLivro(2));
+			pessoa = new Pessoa();
+			pessoa = pessoaRepository.findPessoaByEmailPessoa("jett.elena@hotmail.com");
+			emprestimo.setPessoa(pessoa);
 			emprestimo = emprestimoService.incluirEmprestimo(emprestimo);
 
 			//Quinto
 			emprestimo = new Emprestimo();
-			emprestimo.setLivroID(1);
-			emprestimo.setNomePessoa("Hans Aus");
-
+			emprestimo.setLivro(livroRepository.findLivroByidLivro(1));
+			pessoa = new Pessoa();
+			pessoa = pessoaRepository.findPessoaByEmailPessoa("hans@gmail.com");
+			emprestimo.setPessoa(pessoa);
 			emprestimo = emprestimoService.incluirEmprestimo(emprestimo);*/
 
-			Usuario usuario = new Usuario();
-			usuario.setEmailUsuario("admin");
-			usuario.setSenhaUsuario("admin");
-			usuario.setRole("admin");
-			usuarioService.inserirUsuario(usuario);
 
 		};
 	}

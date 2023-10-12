@@ -24,9 +24,12 @@ public @Data class CredencialDTO implements Serializable {
 
     @Schema(description = "Id do Usuário")
     private Long id;
-
+    @Schema(description = "Id da Pessoa")
+    private long pessoaId;
     @Schema(description = "Email do Usário")
     private String email;
+    @Schema(description = "Nome do Usário")
+    private String nomePessoa;
 
     @Schema(description = "Lista de permissões do Usuário")
     private List<String> roles;

@@ -78,7 +78,7 @@ public class LivroServiceImpl implements LivroService {
     public List<LivroListaDTO> listarTodosLivros() {
         List<LivroListaDTO> lista = livroMapper.toDTO(livroRepository.findAll());
         lista.forEach(livroListaDTO -> {
-            List<Emprestimo> listaEmprestimo = emprestimoRepository.findByLivroAndDataDevolucaoIsNull(livroRepository.findLivroByidLivro(livroListaDTO.getIdLivro()));
+            List<Emprestimo> listaEmprestimo = emprestimoRepository.findEmprestimoByLivroAndDataDevolucaoIsNull(livroRepository.findLivroByidLivro(livroListaDTO.getIdLivro()));
             livroListaDTO.setEmprestado(!listaEmprestimo.isEmpty());
 
         });

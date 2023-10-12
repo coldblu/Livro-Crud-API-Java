@@ -73,7 +73,7 @@ public class EmprestimoController {
         return ResponseEntity.ok(emprestimosAtivosDTO);
     }
 
-    @GetMapping("/ativosDePessoa")
+    @GetMapping("/ativosDePessoa/{id}")
     @Operation(description = "Listar empréstimos ativos de uma pessoa")
     @ApiResponse(responseCode = "200", description = "Lista de empréstimos ativos",
             content = @Content(mediaType = "application/json",

@@ -46,7 +46,7 @@ public class Usuario implements UserDetails {
     @Column(name = "usuario_senha", nullable = false)
     private String senhaUsuario;
 
-    @OneToOne(mappedBy = "usuario")
+    @OneToOne
     private Pessoa pessoa;
 
     @Column(name = "role", nullable = false)

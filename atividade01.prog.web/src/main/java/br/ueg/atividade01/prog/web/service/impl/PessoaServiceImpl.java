@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,7 +29,8 @@ public class PessoaServiceImpl implements PessoaService {
     }
     @Override
     public Pessoa cadastroPessoa(CadastroDTO cadastroDTO){
-        if(!pessoaRepository.isPessoaCadastrada(cadastroDTO.getEmailPessoa())){
+
+        if(Objects.isNull(pessoaRepository.findPessoaByEmailPessoa(cadastroDTO.getEmailPessoa()))){
             Pessoa novaPessoa = new Pessoa();
             novaPessoa.setEmailPessoa(cadastroDTO.getEmailPessoa());
             novaPessoa.setNomePessoa(cadastroDTO.getNomePessoa());

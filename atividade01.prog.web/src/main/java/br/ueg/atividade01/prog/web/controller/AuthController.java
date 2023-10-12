@@ -61,8 +61,10 @@ public class AuthController {
             var usernamePassword = new UsernamePasswordAuthenticationToken(dados.getLogin(), dados.getSenha());
             var auth = this.authenticationManager.authenticate(usernamePassword);
             var token = tokenService.gerarToken((Usuario)auth.getPrincipal());
-            // Verifique se o token é vazio (inválido)
-            if (token.isEmpty()) {
+            // Verifique se o token é vazio
+            String teste = tokenService.validarToken(token);
+            System.out.println(teste);
+            if (teste.isEmpty()) {
                 return null;
             }
             // Obtenha o tempo de expiração do token e do token de refresh do serviço TokenServiceImpl

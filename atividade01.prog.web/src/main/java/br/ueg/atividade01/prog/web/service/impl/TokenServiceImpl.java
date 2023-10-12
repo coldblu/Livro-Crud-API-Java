@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.sound.midi.Soundbank;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
@@ -61,13 +62,14 @@ public class TokenServiceImpl {
         blacklistedAccessTokens.add(accessToken);
     }
 
-    // Verifique se um token de acesso está na lista negra (foi revogado)
+    // Verificar se um token de acesso está na lista negra
     public boolean isAccessTokenRevoked(String accessToken) {
         return blacklistedAccessTokens.contains(accessToken);
     }
 
     public String validarToken(String token){
         try {
+            System.out.println(token);
             Algorithm algorithm = Algorithm.HMAC256(segredo);
             return JWT.require(algorithm)
                     .withIssuer("LivroApi")

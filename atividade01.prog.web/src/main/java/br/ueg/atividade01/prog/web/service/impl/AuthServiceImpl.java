@@ -29,25 +29,30 @@ import java.util.stream.Collectors;
 @Component
 public class AuthServiceImpl implements UserDetailsService {
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    UsuarioRepository usuarioRepository;
     @Autowired
-    private PessoaService pessoaService;
+    PessoaService pessoaService;
     @Autowired
     UsuarioService usuarioService;
+    @Autowired
+    PessoaRepository pessoaRepository;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return usuarioRepository.findByEmailUsuario(username);
     }
-    @Override
+
     public CredencialDTO credenciaisDoUsuario(Usuario usuario, String token, Long accessTokenExpiresIn, Long refreshTokenExpiresIn){
         List<String> roles = usuario.getAuthorities().stream()
                 .map(Object::toString)
                 .collect(Collectors.toList());
 
+        Pessoa pessoa = pessoaRepository.findPessoaByEmailPessoa(usuario.getEmailUsuario());
         return CredencialDTO.builder()
                 .id(usuario.getIdUsuario())
+                .pessoaId(pessoa.getIdPessoa())
+                .nomePessoa(pessoa.getNomePessoa())
                 .email(usuario.getEmailUsuario())
                 .roles(roles)
                 .accessToken(token)
@@ -55,7 +60,7 @@ public class AuthServiceImpl implements UserDetailsService {
                 .refreshTokenExpiresIn(refreshTokenExpiresIn)
                 .build();
     }
-    @Override
+
     public Usuario cadastrarPessoaUsuario(CadastroDTO cadastroDTO){
         Pessoa pessoa = pessoaService.cadastroPessoa(cadastroDTO);
         if(pessoa != null){

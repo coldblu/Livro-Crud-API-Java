@@ -27,14 +27,17 @@ public class EmprestimoServiceImpl implements EmprestimoService {
     private PessoaRepository pessoaRepository;
     @Override
     public Emprestimo incluirEmprestimo(Emprestimo emprestimo) {
-        boolean estaAtivo = verificarEmprestimoAtivo(emprestimo.getIdEmprestimo());
-        if(!estaAtivo){
-            emprestimo.setDataEmprestimo(LocalDate.now()); // Atualiza a data de empréstimo
-            return emprestimoRepository.save(emprestimo);
+        if(emprestimo.getPessoa() != null && emprestimo.getLivro() != null ) {
+            boolean estaAtivo = verificarEmprestimoAtivo(emprestimo.getIdEmprestimo());
+            if (!estaAtivo) {
+                emprestimo.setDataEmprestimo(LocalDate.now()); // Atualiza a data de empréstimo
+                return emprestimoRepository.save(emprestimo);
+            } else {
+                throw new IllegalArgumentException("Há emprestimos ativos do livro.");
+            }
         }else {
-            throw new IllegalArgumentException("Há emprestimos ativos do livro.");
+            throw new IllegalArgumentException("Emprestimo sem livrou ou pessoa!.");
         }
-
     }
 
     @Override
@@ -46,7 +49,7 @@ public class EmprestimoServiceImpl implements EmprestimoService {
     @Override
     public List<Emprestimo> listarEmprestimosAtivosDaPessoa(long id) {
         Pessoa pessoa = pessoaRepository.findPessoaByIdPessoa(id);
-        return emprestimoRepository.findByPessoaAndDataDevolucaoIsNull(pessoa);
+        return emprestimoRepository.findEmprestimoByPessoaAndDataDevolucaoIsNull(pessoa);
     }
 
     public List<Emprestimo> listarEmprestimosFinalizados() {
@@ -97,7 +100,7 @@ public class EmprestimoServiceImpl implements EmprestimoService {
     @Override
     public boolean verificarEmprestimoAtivo(long livroId) {
         Livro livro = livroRepository.findLivroByidLivro(livroId);
-        List<Emprestimo> emprestimosAtivos = emprestimoRepository.findByLivroAndDataDevolucaoIsNull(livro);
+        List<Emprestimo> emprestimosAtivos = emprestimoRepository.findEmprestimoByLivroAndDataDevolucaoIsNull(livro);
         return !emprestimosAtivos.isEmpty();
     }
 

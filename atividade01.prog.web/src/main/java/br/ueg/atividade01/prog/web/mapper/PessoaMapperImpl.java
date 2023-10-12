@@ -25,6 +25,7 @@ public class PessoaMapperImpl implements PessoaMapper{
         List<PessoaListaDTO> listaPessoasDTO =new ArrayList<>();
         for(Pessoa p: pessoas){
             PessoaListaDTO pessoaListaDTO = new PessoaListaDTO();
+            pessoaListaDTO.setIdPessoa(p.getIdPessoa());
             pessoaListaDTO.setEmailPessoa(p.getEmailPessoa());
             pessoaListaDTO.setNomePessoa(p.getNomePessoa());
             listaPessoasDTO.add(pessoaListaDTO);

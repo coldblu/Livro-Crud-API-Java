@@ -8,6 +8,9 @@ public @Data class EmprestimoDTO {
     private long idEmprestimo;
     private long livroID;
     private long pessoaID;
+    private String pessoaNome;
+    private String livroNome;
+    private String pessoaEmail;
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucao;
 }

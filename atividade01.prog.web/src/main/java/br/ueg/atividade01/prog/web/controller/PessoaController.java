@@ -1,13 +1,12 @@
 package br.ueg.atividade01.prog.web.controller;
 
-import br.ueg.atividade01.prog.web.dto.LivroAlteravelDTO;
-import br.ueg.atividade01.prog.web.dto.LivroDTO;
-import br.ueg.atividade01.prog.web.dto.PessoaDTO;
+import br.ueg.atividade01.prog.web.dto.*;
 import br.ueg.atividade01.prog.web.mapper.PessoaMapper;
 import br.ueg.atividade01.prog.web.model.Livro;
 import br.ueg.atividade01.prog.web.model.Pessoa;
 import br.ueg.atividade01.prog.web.service.PessoaService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 @RestController
 @RequestMapping(path = "${app.api.base}/pessoa")
@@ -59,5 +59,17 @@ public class PessoaController {
         } else {
             throw new IllegalArgumentException("Pessoa não encontrada");
         }
+    }
+
+    @GetMapping(path="/listarPessoas")
+    @Operation(description = "Lista todo mundo do mundo.")
+    @ApiResponse(responseCode = "200", description = "Listagem de pessoa",
+            content = @Content(mediaType = "application/json",
+                    array=@ArraySchema()))
+    @ApiResponse(responseCode = "400", description = "Nao encontrado",
+            content = @Content(mediaType = "application/json"))
+    public ResponseEntity<List<PessoaListaDTO>> listarTodasPessoas(){
+        List<PessoaListaDTO> pessoas = pessoaService.listarTodasPessoas();
+        return ResponseEntity.ok(pessoas);
     }
 }
