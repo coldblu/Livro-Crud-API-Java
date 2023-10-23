@@ -55,7 +55,7 @@ public class AuthController {
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             array = @ArraySchema(schema = @Schema(implementation = MessageResponse.class))))
     })
-    @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/login")
     public ResponseEntity<CredencialDTO> login(@RequestBody @Valid AuthDTO dados) {
         if(usuarioService.validarSenhaUsuario(dados)){
             var usernamePassword = new UsernamePasswordAuthenticationToken(dados.getLogin(), dados.getSenha());
