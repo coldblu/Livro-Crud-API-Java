@@ -113,38 +113,38 @@ public class Application {
 			// --------- Usuarios comuns -------------------------------------------/
 
             cadastroDTO = new CadastroDTO();
-			cadastroDTO.setEmailPessoa("João Pessoa");
-			cadastroDTO.setNomePessoa("joao.pessoa@gmail.com");
+			cadastroDTO.setNomePessoa("João Pessoa");
+			cadastroDTO.setEmailPessoa("joao.pessoa@gmail.com");
 			cadastroDTO.setSenha("123456");
 			authService.cadastrarPessoaUsuario(cadastroDTO);
 
             cadastroDTO = new CadastroDTO();
-			cadastroDTO.setEmailPessoa("Maria Rosa");
-			cadastroDTO.setNomePessoa("rosa.maria@gmail.com");
+			cadastroDTO.setNomePessoa("Maria Rosa");
+			cadastroDTO.setEmailPessoa("rosa.maria@gmail.com");
 			cadastroDTO.setSenha("123456");
 			authService.cadastrarPessoaUsuario(cadastroDTO);
 
             cadastroDTO = new CadastroDTO();
-			cadastroDTO.setEmailPessoa("Carlos Magnus");
-			cadastroDTO.setNomePessoa("magnus@carlos.br");
+			cadastroDTO.setNomePessoa("Carlos Magnus");
+			cadastroDTO.setEmailPessoa("magnus@carlos.br");
 			cadastroDTO.setSenha("123456");
 			authService.cadastrarPessoaUsuario(cadastroDTO);
 
 			cadastroDTO = new CadastroDTO();
-			cadastroDTO.setEmailPessoa("Elena Jett");
-			cadastroDTO.setNomePessoa("jett.elena@hotmail.com");
+			cadastroDTO.setNomePessoa("Elena Jett");
+			cadastroDTO.setEmailPessoa("jett.elena@hotmail.com");
 			cadastroDTO.setSenha("123456");
 			authService.cadastrarPessoaUsuario(cadastroDTO);
 
 			cadastroDTO = new CadastroDTO();
-			cadastroDTO.setEmailPessoa("Miranda Nanda");
-			cadastroDTO.setNomePessoa("mira.nanda@yahoo.com");
+			cadastroDTO.setNomePessoa("Miranda Nanda");
+			cadastroDTO.setEmailPessoa("mira.nanda@yahoo.com");
 			cadastroDTO.setSenha("123456");
 			authService.cadastrarPessoaUsuario(cadastroDTO);
 
 			cadastroDTO = new CadastroDTO();
-			cadastroDTO.setEmailPessoa("Hans Aus");
-			cadastroDTO.setNomePessoa("hans@gmail.com");
+			cadastroDTO.setNomePessoa("Hans Aus");
+			cadastroDTO.setEmailPessoa("hans@gmail.com");
 			cadastroDTO.setSenha("123456");
 			authService.cadastrarPessoaUsuario(cadastroDTO);
 

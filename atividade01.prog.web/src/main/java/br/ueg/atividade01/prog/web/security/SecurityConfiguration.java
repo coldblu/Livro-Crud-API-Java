@@ -41,18 +41,6 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
-       /* return httpSecurity
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/auth/cadastro").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/livro").permitAll()
-                        // Adicionar as configurações do Swagger aqui
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();*/
         List<String> freeAccessPatternsList = new ArrayList<>(
                 Arrays.asList(urlAuthController.concat("/**"),
                 "/v2/api-docs",
@@ -75,7 +63,7 @@ public class SecurityConfiguration {
                 .requestMatchers(
                         freeAccessPatterns
                 ).permitAll()
-                .anyRequest().anonymous()//End points abertos para testar o front
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
